@@ -1,2 +1,2 @@
 # requests-ha-torproxy
-requests + haproxy + tor + docker
+requests + haproxy + privoxy + tor + docker
