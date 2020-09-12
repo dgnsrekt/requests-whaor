@@ -3,7 +3,7 @@ from requests_hator_proxy.paths import TEMPLATE_DIRECTORY, TEMP_DIRECTORY
 from tempfile import NamedTemporaryFile
 from tempfile import _TemporaryFileWrapper as TemporaryFile
 
-from typing import Optional
+from typing import Optional, ClassVar
 
 from pydantic import BaseModel as Base
 
@@ -13,8 +13,29 @@ from jinja2 import Environment, FileSystemLoader
 
 from loguru import logger
 
+import docker
+from docker.client import DockerClient
 
-class ConfigBase(Base):
+
+class DockerBase(Base):
+    client: ClassVar[DockerClient] = None
+
+    @classmethod
+    def get_client(cls):
+        if cls.client is None:
+            cls.client = docker.from_env()
+
+        cls.client.ping()
+        logger.debug("Docker connection successful.")
+
+        return cls.client
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {TemporaryFile: lambda temp: temp.name}
+
+
+class DockerVolume(Base):
     name: str
     tempfile: Optional[TemporaryFile]
     docker_path: str
@@ -27,7 +48,7 @@ class ConfigBase(Base):
         return {self.tempfile.name: volume}
 
     @classmethod
-    def create_config(cls, name: str, docker_path: str, render_data: Optional[dict] = None):
+    def render(cls, name: str, docker_path: str, render_data: Optional[dict] = None):
         obj = cls(name=name, docker_path=docker_path)
         obj._create_temporary_file(render_data)
         logger.debug(f"Created config file: \n{obj.json()}")
