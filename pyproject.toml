@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "requests-hator-proxy"
+name = "requests-haor"
 version = "0.1.0"
 description = ""
 authors = ["dgnsrekt <dgnsrekt@pm.me>"]
 readme = "README.md"
-homepage = "https://github.com/dgnsrekt/requests-hator-proxy"
-repository = "https://github.com/dgnsrekt/requests-hator-proxy"
+homepage = "https://github.com/dgnsrekt/requests-haor"
+repository = "https://github.com/dgnsrekt/requests-haor"
 license = "MIT"
 
 [tool.poetry.dependencies]
