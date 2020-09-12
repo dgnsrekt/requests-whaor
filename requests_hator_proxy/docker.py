@@ -1,4 +1,4 @@
-from requests_hator_proxy.paths import TEMPLATE_DIRECTORY, PROJECT_ROOT_PATH
+from requests_hator_proxy.paths import TEMPLATE_DIRECTORY, TEMP_DIRECTORY
 
 from tempfile import NamedTemporaryFile
 from tempfile import _TemporaryFileWrapper as TemporaryFile
@@ -24,7 +24,6 @@ class ConfigBase(Base):
         # NOTE in the futures you may have to think about multiple volumes per container.
 
         volume = {"bind": self.docker_path, "mode": "ro"}
-        print({self.tempfile.name: volume})
         return {self.tempfile.name: volume}
 
     @classmethod
@@ -51,7 +50,7 @@ class ConfigBase(Base):
 
     def _create_temporary_file(self, render_data: Optional[dict] = None):
         config = self._render(render_data)
-        self.tempfile = NamedTemporaryFile(dir=PROJECT_ROOT_PATH)
+        self.tempfile = NamedTemporaryFile(dir=TEMP_DIRECTORY)
         self.tempfile.write(config.encode())
         self.tempfile.seek(0)
 

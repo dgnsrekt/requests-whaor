@@ -62,7 +62,7 @@ class TorCircuit(DockerBase):
 
     @classmethod
     def get_config(cls):
-        return ConfigBase.create_config("torrc2", "/etc/tor/torrc")
+        return ConfigBase.create_config("torrc", "/etc/tor/torrc")
 
     def _create_docker_options(self):
         options = {
@@ -150,8 +150,9 @@ class ProxyLoadBalancer(DockerBase):
         return {self.host_port: self.host_port, self.dashboard_bind_port: self.dashboard_bind_port}
 
     def _log_config_settings(self, render_data: dict):
-        logger.debug("ProxyLoadBalancer configuration settings.")
-        logger.debug("=========================================")
+        logger.debug("===============================================")
+        logger.debug("HAProxyLoadBalancer configuration file settings")
+        logger.debug("===============================================")
         for key, value in render_data.items():
             if key == "proxies":
                 logger.debug(f"{key}: {len(value)}")
@@ -232,9 +233,12 @@ import webbrowser
 from contextlib import contextmanager
 import enlighten
 
+# HaorPool()
+# with RequestsHaor() as session:
+
 
 @contextmanager
-def Requestor(*, proxy_count, proxy_mode, max_threads=3, open_dashboard=False):
+def Requestor(*, proxy_count, proxy_mode, max_threads=2, open_dashboard=False):
     from concurrent.futures import as_completed, ThreadPoolExecutor
 
     tor_config = TorCircuit.get_config()
@@ -247,7 +251,7 @@ def Requestor(*, proxy_count, proxy_mode, max_threads=3, open_dashboard=False):
     with ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [executor.submit(proxy._start) for proxy in proxies]
 
-        for future in as_completed(futures, timeout=5):
+        for future in as_completed(futures, timeout=proxy_count):
             future.result()
 
     with ThreadPoolExecutor(max_workers=max_threads) as executor:
@@ -256,7 +260,7 @@ def Requestor(*, proxy_count, proxy_mode, max_threads=3, open_dashboard=False):
             for proxy in proxies
         ]
 
-        for future in as_completed(futures, timeout=5):
+        for future in as_completed(futures, timeout=proxy_count):
             future.result()
 
     load_balancer = ProxyLoadBalancer(proxies=network.containers, proxy_mode=ProxyMode[proxy_mode])
@@ -286,7 +290,7 @@ def Requestor(*, proxy_count, proxy_mode, max_threads=3, open_dashboard=False):
         with ThreadPoolExecutor(max_workers=max_threads) as executor:
             futures = [executor.submit(proxy._stop) for proxy in proxies]
 
-            for future in as_completed(futures, timeout=5):
+            for future in as_completed(futures, timeout=proxy_count):
                 future.result()
 
         network._stop()
@@ -327,7 +331,7 @@ url = "https://finance.yahoo.com/quote/TSLA/financials?p=TSLA"
 url = "http://jsonip.com/"
 url = "https://www.bitmex.com/api/v1/chat?count=100&reverse=true"
 
-REQUESTS_TO_SEND = 25
+REQUESTS_TO_SEND = 100
 
 cpus = cpu_count() - 2
 proxy_count = cpus * 2
