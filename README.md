@@ -1,5 +1,5 @@
 # requests-haor
-**Requests** with a High Availability Onion Rotator. For the filthiest scrapers on the web, that have no time for rate-limits.
+**Requests** with a High Availability Onion Rotator. For the filthiest web scrapers that have no time for rate-limits.
 
 You may need this.
 ```
