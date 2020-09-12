@@ -1,9 +1,7 @@
 # requests-haor
+**Requests** with a High Availability Onion Rotator. For the filthiest scrapers on the web, that have no time for rate-limits.
 
-# Requests with a High Availability Onion Rotator
 requests + docker + haproxy + tor
-
-For the web scraper that needs data now and has no time for rate-limits.
 
 You may need this.
 ```
