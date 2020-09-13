@@ -93,6 +93,11 @@ docker stop $(docker ps -q --filter ancestor=haproxy:latest)
 docker network rm $(docker network ls -q -f name=haornet)
 ```
 
+## TODO
+* docs
+* tests
+* clean up main context manger logic.
+
 ## Contact Information
 Telegram = Twitter = Tradingview = Discord = @dgnsrekt
 
