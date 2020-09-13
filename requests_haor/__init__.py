@@ -1,1 +1,1 @@
-from requests_haor.core import RequestHaor
+from requests_haor.core import RequestsHaor

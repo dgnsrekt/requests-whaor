@@ -11,12 +11,12 @@ Requests + Docker + HAproxy + Tor
 #### examples/example_one.py
 
 ```
-from requests_haor import RequestHaor
+from requests_haor import RequestsHaor
 import requests
 
 URL = "http://jsonip.com/"
 
-with RequestHaor(proxy_count=5) as requests_haor:
+with RequestsHaor(proxy_count=5) as requests_haor:
     for _ in range(10):
         try:
             resp = requests_haor.get(URL)
@@ -34,7 +34,7 @@ with RequestHaor(proxy_count=5) as requests_haor:
 #### examples/example_three.py
 
 ```
-from requests_haor import RequestHaor
+from requests_haor import RequestsHaor
 import requests
 from requests.exceptions import ProxyError, Timeout, ConnectionError
 from concurrent.futures import as_completed, ProcessPoolExecutor
@@ -70,7 +70,7 @@ def get_retry_recursively(url, proxies, retry=5):
 
 
 results = []
-with RequestHaor(proxy_count=PROXY_COUNT) as requests_haor:
+with RequestsHaor(proxy_count=PROXY_COUNT) as requests_haor:
     with ProcessPoolExecutor(max_workers=WORKERS) as executor:
         futures = [
             executor.submit(get_retry_recursively, URL, requests_haor.rotating_proxy)

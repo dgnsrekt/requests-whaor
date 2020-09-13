@@ -1,4 +1,4 @@
-from requests_haor import RequestHaor
+from requests_haor import RequestsHaor
 import requests
 from requests.exceptions import ProxyError, Timeout, ConnectionError
 
@@ -25,7 +25,7 @@ def get_retry_recursively(url, proxies, retry=5):
     return get_retry_recursively(url, proxies, retry=retry)
 
 
-with RequestHaor(proxy_count=5) as requests_haor:
+with RequestsHaor(proxy_count=5) as requests_haor:
     for _ in range(10):
         result = get_retry_recursively(URL, requests_haor.rotating_proxy)
         print(result)

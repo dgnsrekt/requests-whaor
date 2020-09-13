@@ -26,7 +26,7 @@ class Requests:
 
 
 @contextmanager
-def RequestHaor(proxy_count=5, start_with_threads=True, max_threads=5, timeout=5):
+def RequestsHaor(proxy_count=5, start_with_threads=True, max_threads=5, timeout=5):
     with Haornet() as haornet:
         with OnionCircuits(
             proxy_count, startup_with_threads=start_with_threads, max_threads=max_threads
