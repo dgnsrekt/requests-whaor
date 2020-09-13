@@ -1,20 +1,16 @@
-from requests_haor.docker import DockerBase, DockerVolume
+from requests_haor.docker_client import DockerClient
+from requests_haor.volume_mount import VolumeFile, VolumeMount
 
 from typing import Optional, List
 from docker.models.containers import Container
 
+from pydantic import BaseModel as Base
+
 from loguru import logger
+from contextlib import contextmanager
 
 
-class LoadBalancer(DockerBase):
-    image: str = "haproxy:latest"
-    container: Optional[Container]
-    config: Optional[DockerVolume]
-
-    auto_remove: bool = True
-    detach: bool = True
-    container_timeout: int = 5
-
+class HAProxyOptions(Base):
     max_connections: int = 4096
 
     timeout_client: int = 3600
@@ -22,7 +18,7 @@ class LoadBalancer(DockerBase):
     timeout_queue: int = 5
     timeout_server: int = 3600
 
-    host_name: str = "REQUESTS_HAOR"
+    host_name: str = "REQUESTS_HAOR_NETWORK"
     host_port: int = 8001
 
     backend_name: str = "ONION_CIRCUITS"
@@ -35,48 +31,74 @@ class LoadBalancer(DockerBase):
     class Config:
         arbitrary_types_allowed = True
 
+
+class LoadBalancer(DockerClient):
+    image: str = "haproxy:latest"
+
+    container: Optional[Container]
+
+    volume_mount: VolumeFile
+
+    auto_remove: bool = True
+    detach: bool = True
+    container_timeout: int = 5
+
+    haproxy_options: HAProxyOptions
+
+    class Config:
+        arbitrary_types_allowed = True
+
+    @property
+    def session_proxy(self):
+        return {
+            "http": self.host_address,
+            "https": self.host_address,
+        }
+
+    @property
+    def container_id(self):
+        return self.container.id
+
+    @property
+    def container_name(self):
+        return self.container.name
+
     @property
     def host_address(self):
-        return f"socks5://localhost:{self.host_port}"
+        return f"socks5://localhost:{self.haproxy_options.host_port}"
 
     @property
     def dashboard_address(self):
-        return f"http://localhost:{self.dashboard_bind_port}"
+        return f"http://localhost:{self.haproxy_options.dashboard_bind_port}"
 
     @property
-    def docker_exposed_ports(self):
-        return {self.host_port: self.host_port, self.dashboard_bind_port: self.dashboard_bind_port}
+    def expose_ports(self):
+        return {
+            self.haproxy_options.host_port: self.haproxy_options.host_port,
+            self.haproxy_options.dashboard_bind_port: self.haproxy_options.dashboard_bind_port,
+        }
 
     def _log_config_settings(self, render_data: dict):
         logger.debug("=================================")
         logger.debug("HAProxyLoadBalancer configuration")
         logger.debug("=================================")
-        for key, value in render_data.items():
-            if key == "proxies":
-                logger.debug(f"{key}: {len(value)}")
-                continue
-            if value:
-                logger.debug(f"{key}: {value}")
+        logger.debug(self.json(indent=4))
 
     def _create_docker_options(self):
         render_data = self.dict()
 
         self._log_config_settings(render_data)
 
-        self.config = DockerVolume.render(
-            "haproxy.cfg", "/usr/local/etc/haproxy/haproxy.cfg", render_data=render_data
-        )
-
         options = {
             "image": self.image,
             "auto_remove": self.auto_remove,
             "detach": self.detach,
-            "volumes": self.config.volume,
-            "ports": self.docker_exposed_ports,
+            "mounts": [self.volume_mount.mount],
+            "ports": self.expose_ports,
         }
         return options
 
-    def _start(self):
+    def _start(self, initial_logging=False):
         client = self.get_client()
 
         docker_options = self._create_docker_options()
@@ -85,9 +107,41 @@ class LoadBalancer(DockerBase):
 
         logger.debug(f"Running container {self.container.name} {self.container.short_id}.")
 
-    def _stop(self):
+        self.container.reload()
+
+        if initial_logging:
+
+            for line in self.container.logs().decode().split("\n"):
+                logger.debug(line)
+
+    def _stop(self, initial_logging=False):
         logger.debug(f"Stopping container {self.container.name} {self.container.short_id}.")
+        if initial_logging:
+
+            for line in self.container.logs().decode().split("\n"):
+                logger.debug(line)
 
         self.container.stop(timeout=self.container_timeout)
 
         logger.debug(f"Container {self.container.name} {self.container.short_id} Destroyed.")
+
+
+@contextmanager
+def LoadManager(haornet_containers):
+    haproxy_options = HAProxyOptions(proxies=haornet_containers)
+    with VolumeMount(
+        template_name="haproxy.cfg",
+        target_path="/usr/local/etc/haproxy/haproxy.cfg",
+        template_variables=haproxy_options.dict(),
+    ) as volume_mount:
+
+        try:
+            load_balancer = LoadBalancer(
+                haproxy_options=haproxy_options, volume_mount=volume_mount
+            )
+            load_balancer._start()
+
+            yield load_balancer
+
+        finally:
+            load_balancer._stop()

@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # Tempfiles
-/temp/tmp*
+/temporary_volumes/tmp*

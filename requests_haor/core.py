@@ -1,77 +1,47 @@
-from contextlib import contextmanager
-from loguru import logger
-from requests_haor.onion import OnionCircuit
-from requests_haor.load_balancer import LoadBalancer
-from requests_haor.network import HaorNetwork
-from concurrent.futures import as_completed, ThreadPoolExecutor
+from requests_haor.network import Haornet
+from requests_haor.load_balancer import LoadBalancer, HAProxyOptions, LoadManager
+from requests_haor.onion import OnionCircuits
+from requests_haor.volume_mount import VolumeMount
+
+from docker.types import Mount
 from requests import Session
-
+import requests
+from functools import partial
+from contextlib import contextmanager
 import time
+from loguru import logger
 
 
-def show_docker_debugging_commands():
-    logger.debug("To stop any dangling containers.")
-    logger.debug("docker stop $(docker ps -q --filter ancestor=haproxy:latest)")
-    logger.debug("docker stop $(docker ps -q --filter ancestor=osminogin/tor-simple:latest)")
-    logger.debug("docker network rm $(docker network ls -q -f name=HaorNetwork)")
+class Requests:
+    def __init__(self, proxies, timeout=5):
+        self.timeout = timeout
+        self.proxies = proxies
+
+    @property
+    def rotating_proxy(self):
+        return self.proxies
+
+    def get(self, url, *args, **kwargs):
+        return requests.get(url, timeout=self.timeout, proxies=self.proxies, *args, **kwargs)
 
 
 @contextmanager
-def RequestHaor(*, proxy_count, max_threads=2, open_dashboard=False):
+def RequestHaor(proxy_count=5, start_with_threads=True, max_threads=5, timeout=5):
+    with Haornet() as haornet:
+        with OnionCircuits(
+            proxy_count, startup_with_threads=start_with_threads, max_threads=max_threads
+        ) as proxies:
 
-    show_docker_debugging_commands()
+            for proxy in proxies:
+                haornet.connect_container(proxy.container_id, proxy.container_name)
 
-    logger.info(f"Warming up HaorNetwork.")
+            with LoadManager(haornet_containers=haornet.containers) as load_balancer:
+                haornet.connect_container(load_balancer.container_id, load_balancer.container_name)
 
-    proxies = [OnionCircuit() for _ in range(proxy_count)]
+                logger.info(f"Dashboard Address: {load_balancer.dashboard_address}")
 
-    network = HaorNetwork()
-    network._start()
+                logger.debug("Warming things up.")
 
-    with ThreadPoolExecutor(max_workers=max_threads) as executor:
-        futures = [executor.submit(proxy._start) for proxy in proxies]
+                time.sleep(5)  # let things connect
 
-        for future in as_completed(futures, timeout=proxy_count):
-            future.result()
-
-    with ThreadPoolExecutor(max_workers=max_threads) as executor:
-        futures = [
-            executor.submit(network.connect, proxy.container.id, aliases=[proxy.container.name])
-            for proxy in proxies
-        ]
-
-        for future in as_completed(futures, timeout=proxy_count):
-            future.result()
-
-    load_balancer = LoadBalancer(proxies=network.containers)
-
-    load_balancer._start()
-
-    network.connect(load_balancer.container.id)
-
-    logger.info(f"The HaorNetwork is ready to play.")
-    time.sleep(5)
-
-    session_proxies = {"http": load_balancer.host_address, "https": load_balancer.host_address}
-
-    if open_dashboard:
-        webbrowser.open_new_tab(load_balancer.dashboard_address)
-
-    else:
-        logger.info(f"Dashboard Address: {load_balancer.dashboard_address}")
-
-    try:
-        session = Session()
-        session.proxies = session_proxies
-        yield session
-
-    finally:
-        load_balancer._stop()
-
-        with ThreadPoolExecutor(max_workers=max_threads) as executor:
-            futures = [executor.submit(proxy._stop) for proxy in proxies]
-
-            for future in as_completed(futures, timeout=proxy_count):
-                future.result()
-
-        network._stop()
+                yield Requests(timeout=timeout, proxies=load_balancer.session_proxy)
