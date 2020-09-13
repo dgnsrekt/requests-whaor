@@ -97,6 +97,7 @@ docker network rm $(docker network ls -q -f name=haornet)
 * docs
 * tests
 * clean up main context manger logic.
+* publish
 
 ## Contact Information
 Telegram = Twitter = Tradingview = Discord = @dgnsrekt
