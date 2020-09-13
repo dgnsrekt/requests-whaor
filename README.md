@@ -1,6 +1,8 @@
 # requests-haor
 **Requests** with a High Availability Onion Rotator. For the filthiest web scrapers that have no time for rate-limits.
 
+Requests + Docker + HAproxy + Tor
+
 ## Prerequisites
 * Docker
 * Python ^3.8
@@ -26,7 +28,7 @@ with RequestHaor(proxy_count=5) as requests_haor:
             print(e)
 
 ```
-#### examples/example_one.py Result
+#### Results: examples/example_one.py
 ![alt text](docs/img/example_one.gif)
 
 #### examples/example_three.py
@@ -83,7 +85,7 @@ with RequestHaor(proxy_count=PROXY_COUNT) as requests_haor:
 print(Counter(results))
 
 ```
-#### examples/example_three.py Result
+#### Results: examples/example_three.py
 ![alt text](docs/img/example_three.gif)
 
 ### You may need theses just in case.
