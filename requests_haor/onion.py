@@ -1,4 +1,4 @@
-from requests_hator_proxy.docker import DockerBase
+from requests_haor.docker import DockerBase
 
 from typing import Optional
 from docker.models.containers import Container

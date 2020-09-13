@@ -1,4 +1,4 @@
-from requests_hator_proxy.docker import DockerBase, DockerVolume
+from requests_haor.docker import DockerBase, DockerVolume
 
 from typing import Optional, List
 from docker.models.containers import Container
@@ -22,10 +22,10 @@ class LoadBalancer(DockerBase):
     timeout_queue: int = 5
     timeout_server: int = 3600
 
-    host_name: str = "PROXY_LOAD_BALANCER"
+    host_name: str = "REQUESTS_HAOR"
     host_port: int = 8001
 
-    backend_name: str = "TOR_CIRCUITS"
+    backend_name: str = "ONION_CIRCUITS"
 
     dashboard_bind_port: int = 9999
     dashboard_refresh_rate: int = 2
@@ -48,9 +48,9 @@ class LoadBalancer(DockerBase):
         return {self.host_port: self.host_port, self.dashboard_bind_port: self.dashboard_bind_port}
 
     def _log_config_settings(self, render_data: dict):
-        logger.debug("===============================================")
-        logger.debug("HAProxyLoadBalancer configuration file settings")
-        logger.debug("===============================================")
+        logger.debug("=================================")
+        logger.debug("HAProxyLoadBalancer configuration")
+        logger.debug("=================================")
         for key, value in render_data.items():
             if key == "proxies":
                 logger.debug(f"{key}: {len(value)}")

@@ -1,4 +1,4 @@
-from requests_hator_proxy.paths import TEMPLATE_DIRECTORY, TEMP_DIRECTORY
+from requests_haor.paths import TEMPLATE_DIRECTORY, TEMP_DIRECTORY
 
 from tempfile import NamedTemporaryFile
 from tempfile import _TemporaryFileWrapper as TemporaryFile

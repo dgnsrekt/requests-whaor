@@ -1,8 +1,8 @@
 from contextlib import contextmanager
 from loguru import logger
-from requests_hator_proxy.onion import OnionCircuit
-from requests_hator_proxy.load_balancer import LoadBalancer
-from requests_hator_proxy.network import HaorNetwork
+from requests_haor.onion import OnionCircuit
+from requests_haor.load_balancer import LoadBalancer
+from requests_haor.network import HaorNetwork
 from concurrent.futures import as_completed, ThreadPoolExecutor
 from requests import Session
 
@@ -13,7 +13,7 @@ def show_docker_debugging_commands():
     logger.debug("To stop any dangling containers.")
     logger.debug("docker stop $(docker ps -q --filter ancestor=haproxy:latest)")
     logger.debug("docker stop $(docker ps -q --filter ancestor=osminogin/tor-simple:latest)")
-    logger.debug("docker network rm $(docker network ls -q -f name=requestor_network)")
+    logger.debug("docker network rm $(docker network ls -q -f name=HaorNetwork)")
 
 
 @contextmanager
