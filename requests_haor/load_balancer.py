@@ -78,18 +78,15 @@ class LoadBalancer(DockerClient):
             self.haproxy_options.dashboard_bind_port: self.haproxy_options.dashboard_bind_port,
         }
 
-    def _log_config_settings(self, render_data: dict):
+    def _log_config_settings(self):
         logger.debug(
             "\n==================================="
             "\nHAProxy Reverse Proxy Configuration"
             "\n==================================="
+            "\n" + self.json(indent=4)
         )
-        logger.debug("\n" + self.json(indent=4))
 
     def _create_docker_options(self):
-        render_data = self.dict()
-
-        self._log_config_settings(render_data)
 
         options = {
             "image": self.image,
@@ -102,6 +99,8 @@ class LoadBalancer(DockerClient):
 
     def _start(self, initial_logging=False):
         client = self.get_client()
+
+        self._log_config_settings()
 
         docker_options = self._create_docker_options()
 
