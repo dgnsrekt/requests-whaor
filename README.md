@@ -96,6 +96,10 @@ docker stop $(docker ps -q --filter ancestor=osminogin/tor-simple:latest)
 docker stop $(docker ps -q --filter ancestor=haproxy:latest)
 docker network rm $(docker network ls -q -f name=haornet)
 ```
+### HAProxy Dashboard
+The name of each container is shown in the haproxy stat report.
+![alt text](docs/img/haproxy_ss.png)
+
 
 ## TODO
 * docs

@@ -45,6 +45,7 @@ def get_retry_recursively(url, proxies, retry=5):
 
 last_mexssage_id = None
 with RequestsHaor(proxy_count=PROXY_COUNT) as requests_haor:
+    print("Whats a websocket?")
     while True:
         mexssage = get_retry_recursively(URL, requests_haor.rotating_proxy)
 

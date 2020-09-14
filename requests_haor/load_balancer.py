@@ -80,9 +80,9 @@ class LoadBalancer(DockerClient):
 
     def _log_config_settings(self, render_data: dict):
         logger.debug(
-            "\n================================="
-            "\nHAProxyLoadBalancer configuration"
-            "\n================================="
+            "\n==================================="
+            "\nHAProxy Reverse Proxy Configuration"
+            "\n==================================="
         )
         logger.debug("\n" + self.json(indent=4))
 
