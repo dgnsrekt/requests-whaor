@@ -3,6 +3,8 @@
 
 Requests + Docker + HAproxy + Tor
 
+WORK IN PROGRESS
+
 ## Prerequisites
 * Docker
 * Python ^3.8

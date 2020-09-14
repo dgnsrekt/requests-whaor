@@ -79,10 +79,12 @@ class LoadBalancer(DockerClient):
         }
 
     def _log_config_settings(self, render_data: dict):
-        logger.debug("=================================")
-        logger.debug("HAProxyLoadBalancer configuration")
-        logger.debug("=================================")
-        logger.debug(self.json(indent=4))
+        logger.debug(
+            "\n================================="
+            "\nHAProxyLoadBalancer configuration"
+            "\n================================="
+        )
+        logger.debug("\n" + self.json(indent=4))
 
     def _create_docker_options(self):
         render_data = self.dict()
