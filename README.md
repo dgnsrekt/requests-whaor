@@ -92,6 +92,7 @@ print(Counter(results))
 
 ### You may need theses just in case.
 ```
+docker ps -q --filter ancestor=osminogin/tor-simple:latest | xargs -L 1 docker logs --follow
 docker stop $(docker ps -q --filter ancestor=osminogin/tor-simple:latest)
 docker stop $(docker ps -q --filter ancestor=haproxy:latest)
 docker network rm $(docker network ls -q -f name=haornet)

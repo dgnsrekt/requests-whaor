@@ -7,7 +7,7 @@ from docker.types import Mount
 from requests import Session
 import requests
 from functools import partial
-from contextlib import contextmanager
+from contextlib import contextmanager, ExitStack
 import time
 from loguru import logger
 
@@ -27,21 +27,27 @@ class Requests:
 
 @contextmanager
 def RequestsHaor(proxy_count=5, start_with_threads=True, max_threads=5, timeout=5):
-    with Haornet() as haornet:
-        with OnionCircuits(
-            proxy_count, startup_with_threads=start_with_threads, max_threads=max_threads
-        ) as proxies:
-
+    with ExitStack() as stack:
+        try:
+            haornet = stack.enter_context(Haornet())
+            proxies = stack.enter_context(
+                OnionCircuits(
+                    proxy_count, startup_with_threads=start_with_threads, max_threads=max_threads
+                )
+            )
             for proxy in proxies:
                 haornet.connect_container(proxy.container_id, proxy.container_name)
 
-            with LoadManager(haornet_containers=haornet.containers) as load_balancer:
-                haornet.connect_container(load_balancer.container_id, load_balancer.container_name)
+            load_balancer = stack.enter_context(LoadManager(haornet_containers=haornet.containers))
 
-                logger.info(f"Dashboard Address: {load_balancer.dashboard_address}")
+            haornet.connect_container(load_balancer.container_id, load_balancer.container_name)
 
-                logger.debug("Warming things up.")
+            logger.info(f"Dashboard Address: {load_balancer.dashboard_address}")
+            logger.debug("Warming things up.")
+            time.sleep(5)  # let things connect
 
-                time.sleep(5)  # let things connect
+            yield Requests(timeout=timeout, proxies=load_balancer.session_proxy)
 
-                yield Requests(timeout=timeout, proxies=load_balancer.session_proxy)
+        finally:
+
+            stack.pop_all().close()

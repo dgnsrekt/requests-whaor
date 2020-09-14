@@ -1,4 +1,4 @@
-from requests_haor import RequestsHaor
+from requests_haor.core import RequestsHaor
 import requests
 from requests.exceptions import ProxyError, Timeout, ConnectionError
 from concurrent.futures import as_completed, ProcessPoolExecutor
