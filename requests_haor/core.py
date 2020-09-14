@@ -26,13 +26,18 @@ class Requests:
 
 
 @contextmanager
-def RequestsHaor(proxy_count=5, start_with_threads=True, max_threads=5, timeout=5):
+def RequestsHaor(
+    proxy_count=5, start_with_threads=True, max_threads=5, timeout=5, initial_logging=False
+):
     with ExitStack() as stack:
         try:
             haornet = stack.enter_context(Haornet())
             proxies = stack.enter_context(
                 OnionCircuits(
-                    proxy_count, startup_with_threads=start_with_threads, max_threads=max_threads
+                    proxy_count,
+                    startup_with_threads=start_with_threads,
+                    max_threads=max_threads,
+                    initial_logging=initial_logging,
                 )
             )
             for proxy in proxies:

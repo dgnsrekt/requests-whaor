@@ -1,4 +1,5 @@
-# requests-haor
+# **requests-haor** [ri-kwests hohr]
+
 **Requests** with a High Availability Onion Rotator. For the filthiest web scrapers that have no time for rate-limits.
 
 Requests + Docker + HAproxy + Tor
