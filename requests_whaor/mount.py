@@ -1,4 +1,4 @@
-from requests_whaor.docker_client import DockerClient
+from requests_whaor.client import Client
 from docker.models.volumes import Volume as DockerVolume
 from docker.types import Mount
 from typing import Optional, Dict, Any
@@ -13,7 +13,8 @@ import string
 
 from contextlib import contextmanager
 
-class VolumeFile(DockerClient):
+
+class MountFile(Client):
     template_name: str
     target_path: str
     volume_driver: str = "local"
@@ -63,7 +64,9 @@ class VolumeFile(DockerClient):
     def _start(self):
         client = self.get_client()
         self._generate_source_file()
-        self.mount = Mount(target=self.target_path, source=self.source_path, read_only=True, type="bind")
+        self.mount = Mount(
+            target=self.target_path, source=self.source_path, read_only=True, type="bind"
+        )
 
     def _stop(self):
         if self.temporary_file:
@@ -71,13 +74,15 @@ class VolumeFile(DockerClient):
 
 
 @contextmanager
-def VolumeMount(*, template_name, target_path, template_variables=None):
-    volume = VolumeFile(template_name=template_name, target_path=target_path, template_variables=template_variables)
+def MountPoint(*, template_name, target_path, template_variables=None):
+    mount_file = MountFile(
+        template_name=template_name, target_path=target_path, template_variables=template_variables
+    )
 
     try:
-        volume._start()
+        mount_file._start()
 
-        yield volume
+        yield mount_file
 
     finally:
-        volume._stop()
+        mount_file._stop()

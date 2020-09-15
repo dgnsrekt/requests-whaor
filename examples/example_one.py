@@ -2,7 +2,7 @@ from requests_whaor import RequestsWhaor
 
 URL = "http://jsonip.com/"
 
-with RequestsWhaor(proxy_count=5) as requests_whaor:
+with RequestsWhaor(onion_count=5) as requests_whaor:
     for _ in range(10):
         try:
             resp = requests_whaor.get(URL)

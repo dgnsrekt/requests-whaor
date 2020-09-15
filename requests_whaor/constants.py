@@ -1,3 +1,3 @@
-HAPROXY_IMAGE_TAG = "haproxy:2.2.3"
+HAPROXY_IMAGE = "haproxy:2.2.3"
 
-TOR_IMAGE_TAG = "osminogin/tor-simple:0.4.3.6"
+TOR_IMAGE = "osminogin/tor-simple:0.4.3.6"
