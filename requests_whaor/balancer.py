@@ -69,6 +69,7 @@ class Balancer(ContainerBase):
             "\n==================="
             "\n" + self.json(indent=4)
         )
+        self.show_follow_logs_command()
 
 
 @contextmanager

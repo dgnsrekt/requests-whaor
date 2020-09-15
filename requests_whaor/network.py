@@ -14,7 +14,7 @@ class Network(Client):
     docker_network: Optional[DockerNetwork]
 
     def connect_container(self, container_id, container_name):
-        logger.debug(f"{container_name} to {self.network_name}")
+        logger.debug(f"connecting {container_name} to the {self.network_name} network")
         return self.docker_network.connect(container_id, aliases=[container_name])
 
     @property

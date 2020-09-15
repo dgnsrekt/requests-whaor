@@ -60,6 +60,10 @@ class ContainerBase(Client):
     def container_timeout(self):
         return self.container_options.container_timeout
 
+    def show_follow_logs_command(self):
+        logger.info(f"Run the following command to show ({self.container_name}) containers logs.")
+        logger.info(f"docker container logs -f {self.container_name}")
+
     def expose_port(self, port: int):
         self.container_options.ports[port] = port
 
