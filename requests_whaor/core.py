@@ -7,6 +7,8 @@ from contextlib import contextmanager, ExitStack
 import time
 from loguru import logger
 
+import random
+
 
 class Requests:
     def __init__(self, proxies, timeout=5):
@@ -19,6 +21,15 @@ class Requests:
 
     def get(self, url, *args, **kwargs):
         return requests.get(url, timeout=self.timeout, proxies=self.proxies, *args, **kwargs)
+
+
+def pause(sleep):
+    if random.random() > 0.5:
+        logger.debug("Warming things up.")
+    else:
+        logger.debug("Just chillin for a sec.")
+
+    time.sleep(sleep)  # let things connect
 
 
 @contextmanager
@@ -46,8 +57,8 @@ def RequestsWhaor(
             network.connect_container(onion_balancer.container_id, onion_balancer.container_name)
 
             logger.info(f"Dashboard Address: {onion_balancer.dashboard_address}")
-            logger.debug("Warming things up.")
-            time.sleep(5)  # let things connect
+
+            pause(5)
 
             yield Requests(timeout=timeout, proxies=onion_balancer.proxies)
 
