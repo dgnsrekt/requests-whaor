@@ -1,4 +1,4 @@
-from requests_whaor.network import Whaornet
+from requests_whaor.network import WhaorNet
 from requests_whaor.balancer import HAProxyOptions, OnionBalancer
 from requests_whaor.circuit import OnionCircuits
 
@@ -27,7 +27,7 @@ def RequestsWhaor(
 ):
     with ExitStack() as stack:
         try:
-            network = stack.enter_context(Whaornet())
+            network = stack.enter_context(WhaorNet())
             onions = stack.enter_context(
                 OnionCircuits(
                     onion_count,

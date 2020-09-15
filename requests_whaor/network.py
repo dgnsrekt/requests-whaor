@@ -48,7 +48,7 @@ class Network(Client):
 
 
 @contextmanager
-def Whaornet(name: str = "whaornet", driver: str = "bridge"):
+def WhaorNet(name: str = "whaornet", driver: str = "bridge"):
 
     whaornet = Network(name=name, driver=driver)
 
