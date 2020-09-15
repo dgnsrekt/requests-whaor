@@ -34,7 +34,7 @@ def get_retry_loop(url, proxies, retry=5):
 
 
 results = []
-with RequestsWhaor(proxy_count=PROXY_COUNT) as requests_whaor:
+with RequestsWhaor(onion_count=PROXY_COUNT) as requests_whaor:
     with ProcessPoolExecutor(max_workers=WORKERS) as executor:
         futures = [
             executor.submit(get_retry_loop, URL, requests_whaor.rotating_proxy)

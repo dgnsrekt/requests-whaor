@@ -18,7 +18,7 @@ from requests_whaor import RequestsWhaor
 
 URL = "http://jsonip.com/"
 
-with RequestsWhaor(proxy_count=5) as requests_whaor:
+with RequestsWhaor(onion_count=5) as requests_whaor:
     for _ in range(10):
         try:
             resp = requests_whaor.get(URL)
@@ -72,7 +72,7 @@ def get_retry_loop(url, proxies, retry=5):
 
 
 results = []
-with RequestsWhaor(proxy_count=PROXY_COUNT) as requests_whaor:
+with RequestsWhaor(onion_count=PROXY_COUNT) as requests_whaor:
     with ProcessPoolExecutor(max_workers=WORKERS) as executor:
         futures = [
             executor.submit(get_retry_loop, URL, requests_whaor.rotating_proxy)
@@ -95,7 +95,7 @@ print(Counter(results))
 docker ps -q --filter ancestor=osminogin/tor-simple:latest | xargs -L 1 docker logs --follow
 docker stop $(docker ps -q --filter ancestor=osminogin/tor-simple:latest)
 docker stop $(docker ps -q --filter ancestor=haproxy:latest)
-docker network rm $(docker network ls -q -f name=haornet)
+docker network rm $(docker network ls -q -f name=whaornet)
 ```
 ### HAProxy Dashboard
 The name of each container is shown in the haproxy stat report.

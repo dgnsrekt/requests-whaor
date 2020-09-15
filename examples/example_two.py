@@ -25,7 +25,7 @@ def get_retry_loop(url, proxies, retry=5):
     return get_retry_loop(url, proxies, retry=retry)
 
 
-with RequestsWhaor(proxy_count=5) as requests_whaor:
+with RequestsWhaor(onion_count=5) as requests_whaor:
     for _ in range(10):
         result = get_retry_loop(URL, requests_whaor.rotating_proxy)
         print(result)

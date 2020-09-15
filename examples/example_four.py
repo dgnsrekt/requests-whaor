@@ -44,7 +44,7 @@ def get_retry_loop(url, proxies, retry=5):
 
 
 last_mexssage_id = None
-with RequestsWhaor(proxy_count=PROXY_COUNT) as requests_whaor:
+with RequestsWhaor(onion_count=PROXY_COUNT) as requests_whaor:
     print("Whats a websocket?")
     while True:
         mexssage = get_retry_loop(URL, requests_whaor.rotating_proxy)

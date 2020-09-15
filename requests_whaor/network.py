@@ -1,4 +1,4 @@
-from requests_whaor.docker_client import DockerClient
+from requests_whaor.client import Client
 from docker.models.networks import Network as DockerNetwork
 from contextlib import contextmanager
 
@@ -7,7 +7,7 @@ from loguru import logger
 from typing import Optional
 
 
-class Network(DockerClient):
+class Network(Client):
     name: str
     driver: str
 
@@ -48,13 +48,13 @@ class Network(DockerClient):
 
 
 @contextmanager
-def Haornet(name: str = "haornet", driver: str = "bridge"):
+def Whaornet(name: str = "whaornet", driver: str = "bridge"):
 
-    haornet = Network(name=name, driver=driver)
+    whaornet = Network(name=name, driver=driver)
 
     try:
-        haornet._start()
-        yield haornet
+        whaornet._start()
+        yield whaornet
 
     finally:
-        haornet._stop()
+        whaornet._stop()
