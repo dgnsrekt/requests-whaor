@@ -61,14 +61,14 @@ class MountFile(Client):
         self.temporary_file.write(render_data.encode())
         self.temporary_file.seek(0)
 
-    def _start(self):
+    def start(self):
         client = self.get_client()
         self._generate_source_file()
         self.mount = Mount(
             target=self.target_path, source=self.source_path, read_only=True, type="bind"
         )
 
-    def _stop(self):
+    def stop(self):
         if self.temporary_file:
             self.temporary_file.close()
 
@@ -80,9 +80,9 @@ def MountPoint(*, template_name, target_path, template_variables=None):
     )
 
     try:
-        mount_file._start()
+        mount_file.start()
 
         yield mount_file
 
     finally:
-        mount_file._stop()
+        mount_file.stop()

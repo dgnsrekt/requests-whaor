@@ -30,12 +30,12 @@ class Network(Client):
     def network_id(self):
         return self.docker_network.short_id
 
-    def _start(self):
+    def start(self):
         client = self.get_client()
         self.docker_network = client.networks.create(name=self.name, driver=self.driver)
         logger.debug(f"Network: {self.network_name} {self.network_id} Created.")
 
-    def _stop(self):
+    def stop(self):
         self.docker_network.reload()
 
         if self.docker_network.containers:
@@ -53,8 +53,8 @@ def Whaornet(name: str = "whaornet", driver: str = "bridge"):
     whaornet = Network(name=name, driver=driver)
 
     try:
-        whaornet._start()
+        whaornet.start()
         yield whaornet
 
     finally:
-        whaornet._stop()
+        whaornet.stop()

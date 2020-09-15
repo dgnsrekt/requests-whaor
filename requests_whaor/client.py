@@ -49,6 +49,10 @@ class ContainerBase(Client):
         return self.container.id
 
     @property
+    def container_short_id(self):
+        return self.container.short_id
+
+    @property
     def container_name(self):
         return self.container.name
 
@@ -64,7 +68,7 @@ class ContainerBase(Client):
 
         self.container = client.containers.run(**self.container_options.dict())
 
-        logger.debug(f"Running container {self.container.name} {self.container.short_id}.")
+        logger.debug(f"Running container {self.container_name} {self.container_short_id}.")
 
         if show_log:
             self.container.reload()
@@ -73,7 +77,7 @@ class ContainerBase(Client):
                 logger.debug(line)
 
     def stop(self, show_log=False):
-        logger.debug(f"Stopping container {self.container.name} {self.container.short_id}.")
+        logger.debug(f"Stopping container {self.container_name} {self.container_short_id}.")
 
         if show_log:
             self.container.reload()
@@ -83,4 +87,4 @@ class ContainerBase(Client):
 
         self.container.stop(timeout=self.container_timeout)
 
-        logger.debug(f"Container {self.container.name} {self.container.short_id} Destroyed.")
+        logger.debug(f"Container {self.container_name} {self.container_short_id} Destroyed.")
