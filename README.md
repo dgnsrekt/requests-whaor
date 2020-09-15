@@ -15,7 +15,6 @@ WORK IN PROGRESS
 
 ```
 from requests_whaor import RequestsWhaor
-import requests
 
 URL = "http://jsonip.com/"
 
