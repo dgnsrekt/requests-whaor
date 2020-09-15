@@ -1,4 +1,4 @@
-from requests_haor.docker_client import DockerClient
+from requests_whaor.docker_client import DockerClient
 from docker.models.networks import Network as DockerNetwork
 from contextlib import contextmanager
 
@@ -36,9 +36,15 @@ class Network(DockerClient):
         logger.debug(f"Network: {self.network_name} {self.network_id} Created.")
 
     def _stop(self):
-        if self.docker_network:
-            self.docker_network.remove()
-            logger.debug(f"Network: {self.network_name} {self.network_id} Destroyed.")
+        self.docker_network.reload()
+
+        if self.docker_network.containers:
+
+            for container in self.docker_network.containers:
+                self.docker_network.disconnect(container.name)
+
+        self.docker_network.remove()
+        logger.debug(f"Network: {self.network_name} {self.network_id} Destroyed.")
 
 
 @contextmanager

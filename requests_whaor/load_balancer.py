@@ -1,5 +1,5 @@
-from requests_haor.docker_client import DockerClient
-from requests_haor.volume_mount import VolumeFile, VolumeMount
+from requests_whaor.docker_client import DockerClient
+from requests_whaor.volume_mount import VolumeFile, VolumeMount
 
 from typing import Optional, List
 from docker.models.containers import Container
@@ -18,7 +18,7 @@ class HAProxyOptions(Base):
     timeout_queue: int = 5
     timeout_server: int = 3600
 
-    host_name: str = "REQUESTS_HAOR_NETWORK"
+    host_name: str = "REQUESTS_WHAOR_NETWORK"
     host_port: int = 8001
 
     backend_name: str = "ONION_CIRCUITS"

@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "requests-haor"
+name = "requests-whaor"
 version = "0.1.0"
-description = "Requests with a High Availability Onion Rotator. For the filthiest web scrapers that have no time for rate-limits."
+description = "Requests With High Availability Onion Router. For the filthiest web scrapers that have no time for rate-limits."
 authors = ["dgnsrekt <dgnsrekt@pm.me>"]
 readme = "README.md"
-homepage = "https://github.com/dgnsrekt/requests-haor"
-repository = "https://github.com/dgnsrekt/requests-haor"
+homepage = "https://github.com/dgnsrekt/requests-whaor"
+repository = "https://github.com/dgnsrekt/requests-whaor"
 license = "MIT"
 
 [tool.poetry.dependencies]

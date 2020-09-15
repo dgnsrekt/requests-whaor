@@ -1,10 +1,10 @@
-from requests_haor.docker_client import DockerClient
+from requests_whaor.docker_client import DockerClient
 from docker.models.volumes import Volume as DockerVolume
 from docker.types import Mount
 from typing import Optional, Dict, Any
 from pydantic import validator
 
-from requests_haor.paths import TEMPLATE_DIRECTORY, TEMPORARY_FILES_DIRECTORY
+from requests_whaor.paths import TEMPLATE_DIRECTORY, TEMPORARY_FILES_DIRECTORY
 from pathlib import Path
 from tempfile import _TemporaryFileWrapper as TemporaryFile
 from tempfile import NamedTemporaryFile

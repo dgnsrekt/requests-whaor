@@ -1,6 +1,6 @@
-# **requests-haor** [ri-kwests hohr]
+# **requests-whaor** [ri-kwests hawr]
 
-**Requests** with a High Availability Onion Rotator. For the filthiest web scrapers that have no time for rate-limits.
+**Requests** **W**ith **H**igh **A**vailability **O**nion **R**outer. For the filthiest web scrapers that have no time for rate-limits.
 
 Requests + Docker + HAproxy + Tor
 
@@ -14,15 +14,15 @@ WORK IN PROGRESS
 #### examples/example_one.py
 
 ```
-from requests_haor import RequestsHaor
+from requests_whaor import RequestsWhaor
 import requests
 
 URL = "http://jsonip.com/"
 
-with RequestsHaor(proxy_count=5) as requests_haor:
+with RequestsWhaor(proxy_count=5) as requests_whaor:
     for _ in range(10):
         try:
-            resp = requests_haor.get(URL)
+            resp = requests_whaor.get(URL)
 
             if resp.ok:
                 print(resp.text)
@@ -37,7 +37,7 @@ with RequestsHaor(proxy_count=5) as requests_haor:
 #### examples/example_three.py
 
 ```
-from requests_haor import RequestsHaor
+from requests_whaor import RequestsWhaor
 import requests
 from requests.exceptions import ProxyError, Timeout, ConnectionError
 from concurrent.futures import as_completed, ProcessPoolExecutor
@@ -73,10 +73,10 @@ def get_retry_recursively(url, proxies, retry=5):
 
 
 results = []
-with RequestsHaor(proxy_count=PROXY_COUNT) as requests_haor:
+with RequestsWhaor(proxy_count=PROXY_COUNT) as requests_whaor:
     with ProcessPoolExecutor(max_workers=WORKERS) as executor:
         futures = [
-            executor.submit(get_retry_recursively, URL, requests_haor.rotating_proxy)
+            executor.submit(get_retry_recursively, URL, requests_whaor.rotating_proxy)
             for _ in range(REQUESTS_TO_SEND)
         ]
         for future in as_completed(futures):

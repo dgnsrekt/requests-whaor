@@ -1,4 +1,4 @@
-from requests_whaor import RequestsWhaor
+from requests_whaor.core import RequestsWhaor
 import requests
 from requests.exceptions import ProxyError, Timeout, ConnectionError
 from concurrent.futures import as_completed, ProcessPoolExecutor

@@ -1,4 +1,4 @@
-from requests_haor.docker_client import DockerClient
+from requests_whaor.docker_client import DockerClient
 from concurrent.futures import as_completed, ThreadPoolExecutor
 
 from typing import Optional

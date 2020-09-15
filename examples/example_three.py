@@ -1,4 +1,4 @@
-from requests_haor import RequestsHaor
+from requests_whaor import RequestsWhaor
 import requests
 from requests.exceptions import ProxyError, Timeout, ConnectionError
 from concurrent.futures import as_completed, ProcessPoolExecutor
@@ -34,10 +34,10 @@ def get_retry_recursively(url, proxies, retry=5):
 
 
 results = []
-with RequestsHaor(proxy_count=PROXY_COUNT) as requests_haor:
+with RequestsWhaor(proxy_count=PROXY_COUNT) as requests_whaor:
     with ProcessPoolExecutor(max_workers=WORKERS) as executor:
         futures = [
-            executor.submit(get_retry_recursively, URL, requests_haor.rotating_proxy)
+            executor.submit(get_retry_recursively, URL, requests_whaor.rotating_proxy)
             for _ in range(REQUESTS_TO_SEND)
         ]
         for future in as_completed(futures):

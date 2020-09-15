@@ -1,7 +1,7 @@
-from requests_haor.network import Haornet
-from requests_haor.load_balancer import LoadBalancer, HAProxyOptions, LoadManager
-from requests_haor.onion import OnionCircuits
-from requests_haor.volume_mount import VolumeMount
+from requests_whaor.network import Haornet
+from requests_whaor.load_balancer import LoadBalancer, HAProxyOptions, LoadManager
+from requests_whaor.onion import OnionCircuits
+from requests_whaor.volume_mount import VolumeMount
 
 from docker.types import Mount
 from requests import Session
@@ -26,7 +26,7 @@ class Requests:
 
 
 @contextmanager
-def RequestsHaor(
+def RequestsWhaor(
     proxy_count=5, start_with_threads=True, max_threads=5, timeout=5, initial_logging=False
 ):
     with ExitStack() as stack:
