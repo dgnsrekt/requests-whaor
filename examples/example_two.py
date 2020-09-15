@@ -5,7 +5,7 @@ from requests.exceptions import ProxyError, Timeout, ConnectionError
 URL = "http://jsonip.com/"
 
 
-def get_retry_recursively(url, proxies, retry=5):
+def get_retry_loop(url, proxies, retry=5):
     try:
         response = requests.get(url, proxies=proxies, timeout=5)
 
@@ -22,10 +22,10 @@ def get_retry_recursively(url, proxies, retry=5):
     else:
         return "FAILED"
 
-    return get_retry_recursively(url, proxies, retry=retry)
+    return get_retry_loop(url, proxies, retry=retry)
 
 
 with RequestsWhaor(proxy_count=5) as requests_whaor:
     for _ in range(10):
-        result = get_retry_recursively(URL, requests_whaor.rotating_proxy)
+        result = get_retry_loop(URL, requests_whaor.rotating_proxy)
         print(result)

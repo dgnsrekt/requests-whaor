@@ -22,7 +22,7 @@ URL = "https://www.bitmex.com/api/v1/chat?count=1&reverse=true"
 PROXY_COUNT = 10
 
 
-def get_retry_recursively(url, proxies, retry=5):
+def get_retry_loop(url, proxies, retry=5):
     try:
         response = requests.get(url, proxies=proxies, timeout=5)
 
@@ -40,14 +40,14 @@ def get_retry_recursively(url, proxies, retry=5):
     else:
         return None
 
-    return get_retry_recursively(url, proxies, retry=retry)
+    return get_retry_loop(url, proxies, retry=retry)
 
 
 last_mexssage_id = None
 with RequestsWhaor(proxy_count=PROXY_COUNT) as requests_whaor:
     print("Whats a websocket?")
     while True:
-        mexssage = get_retry_recursively(URL, requests_whaor.rotating_proxy)
+        mexssage = get_retry_loop(URL, requests_whaor.rotating_proxy)
 
         # if mexssage.channelID != 1:
         # continue
