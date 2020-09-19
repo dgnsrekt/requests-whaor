@@ -8,12 +8,14 @@ import time
 from loguru import logger
 
 import random
+from math import floor
 
 
 class Requests:
-    def __init__(self, proxies, timeout=5):
+    def __init__(self, proxies, onions, timeout=5):
         self.timeout = timeout
         self.proxies = proxies
+        self.onions = onions
 
     @property
     def rotating_proxy(self):
@@ -21,6 +23,20 @@ class Requests:
 
     def get(self, url, *args, **kwargs):
         return requests.get(url, timeout=self.timeout, proxies=self.proxies, *args, **kwargs)
+
+    def restart_onions(self):
+        k = len(self.onions) // 2
+        k = 1 if k <= 1 else k
+
+        onions = random.sample(self.onions, k=k)
+        print(f"restarting {k} onions")  # TODO: logging
+
+        for onion in onions:
+            print("restaring", onion.container_name)
+            onion.container.restart(timeout=5)
+            time.sleep(1)
+
+        time.sleep(5)
 
 
 def pause(sleep):
@@ -60,7 +76,7 @@ def RequestsWhaor(
 
             pause(5)
 
-            yield Requests(timeout=timeout, proxies=onion_balancer.proxies)
+            yield Requests(timeout=timeout, proxies=onion_balancer.proxies, onions=onions)
 
         finally:
 
