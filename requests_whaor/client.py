@@ -67,6 +67,10 @@ class ContainerBase(Client):
     def expose_port(self, port: int):
         self.container_options.ports[port] = port
 
+    def restart(self, timeout=5):
+        logger.debug(f"Restarting container {self.container_name} {self.container_short_id}.")
+        self.container.restart(timeout=timeout)
+
     def start(self, show_log=False):
         client = self.get_client()
 

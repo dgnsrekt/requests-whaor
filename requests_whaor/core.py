@@ -24,16 +24,21 @@ class Requests:
     def get(self, url, *args, **kwargs):
         return requests.get(url, timeout=self.timeout, proxies=self.proxies, *args, **kwargs)
 
-    def restart_onions(self):
+    def restart_onions(self, with_threads=True, max_threads=5):
         k = len(self.onions) // 2
         k = 1 if k <= 1 else k
 
         onions = random.sample(self.onions, k=k)
         print(f"restarting {k} onions")  # TODO: logging
 
-        for onion in onions:
-            print("restaring", onion.container_name)
-            onion.container.restart(timeout=5)
+        if with_threads:
+            with ThreadPoolExecutor(max_workers=max_threads) as executor:
+                futures = [executor.submit(onion.restart) for onion in onions]
+                for future in as_completed(futures):
+                    future.results()
+        else:
+            for onion in onions:
+                onion.restart()
 
         time.sleep(1)
 
