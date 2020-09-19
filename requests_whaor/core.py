@@ -2,6 +2,8 @@ from requests_whaor.network import WhaorNet
 from requests_whaor.balancer import HAProxyOptions, OnionBalancer
 from requests_whaor.circuit import OnionCircuits
 
+from concurrent.futures import as_completed, ThreadPoolExecutor
+
 import requests
 from contextlib import contextmanager, ExitStack
 import time
