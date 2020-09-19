@@ -37,7 +37,7 @@ class Requests:
             with ThreadPoolExecutor(max_workers=max_threads) as executor:
                 futures = [executor.submit(onion.restart) for onion in onions]
                 for future in as_completed(futures):
-                    future.results()
+                    future.result()
         else:
             for onion in onions:
                 onion.restart()
