@@ -34,9 +34,8 @@ class Requests:
         for onion in onions:
             print("restaring", onion.container_name)
             onion.container.restart(timeout=5)
-            time.sleep(1)
 
-        time.sleep(5)
+        time.sleep(1)
 
 
 def pause(sleep):
