@@ -1,26 +1,45 @@
-from requests_whaor.client import ContainerOptions, ContainerBase
+"""This module provides objects for managing TOR docker instances."""
+
 from concurrent.futures import as_completed, ThreadPoolExecutor
-from requests_whaor.constants import TOR_IMAGE
-
-from typing import Optional
-from docker.models.containers import Container
 from contextlib import contextmanager
+from typing import ContextManager, List, Optional
 
-from loguru import logger
+from .client import ContainerBase, ContainerOptions
+from .constants import TOR_IMAGE
 
 
 class OnionCircuit(ContainerBase):
+    """A TOR Docker Container Object.
+
+    Attributes:
+        container_options (ContainerOptions): Container Options for TOR docker instance.
+    """
+
     container_options: ContainerOptions = ContainerOptions(image=TOR_IMAGE)
 
 
 @contextmanager
-def OnionCircuits(
-    onion_count,
-    startup_with_threads=False,
-    max_threads=2,
-    thread_pool_timeout=None,
-    show_log=False,
-):
+def OnionCircuits(  # pylint: disable=invalid-name
+    onion_count: int,
+    startup_with_threads: bool = False,
+    max_threads: int = 2,
+    thread_pool_timeout: Optional[int] = None,
+    show_log: bool = False,
+) -> ContextManager[List[OnionCircuit]]:
+    """Context manager which yields a list of started TOR containers.
+
+    Takes care of starting and stopping multiple docker container instances of TOR.
+
+    Args:
+        onion_count (int): Number of TOR docker container instances to start.
+        start_with_threads (bool): If True uses threads to start up the containers.
+        max_threads (int): Max number of threads to use to start up the containers.
+        thread_pool_timeout (Optional[int]): Timeout for ThreadPoolExecutor.
+        show_log (bool): If True shows the containers logs.
+
+    Yields:
+        List[OnionCircuit]: A list of started OnionCircuit objects.
+    """
     onion_circuits = [OnionCircuit() for _ in range(onion_count)]
 
     try:
