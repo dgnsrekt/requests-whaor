@@ -1,6 +1,5 @@
 from requests_whaor.client import ContainerBase, ContainerOptions
 from requests_whaor.mount import MountFile, MountPoint
-from requests_whaor.constants import HAPROXY_IMAGE
 
 from typing import Optional, List
 from docker.models.containers import Container
@@ -9,6 +8,8 @@ from pydantic import BaseModel as Base
 
 from loguru import logger
 from contextlib import contextmanager
+
+HAPROXY_IMAGE = "haproxy:2.2.3"
 
 
 class HAProxyOptions(Base):

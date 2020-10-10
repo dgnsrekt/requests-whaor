@@ -5,7 +5,8 @@ from contextlib import contextmanager
 from typing import ContextManager, List, Optional
 
 from .client import ContainerBase, ContainerOptions
-from .constants import TOR_IMAGE
+
+TOR_IMAGE = "osminogin/tor-simple:0.4.3.6"
 
 
 class OnionCircuit(ContainerBase):
