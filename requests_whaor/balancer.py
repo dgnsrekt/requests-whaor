@@ -1,18 +1,37 @@
-from requests_whaor.client import ContainerBase, ContainerOptions
-from requests_whaor.mount import MountFile, MountPoint
+"""This module provides objects for managing the network balancer."""
 
-from typing import Optional, List
+from contextlib import contextmanager
+from typing import Dict, List
+
 from docker.models.containers import Container
-
+from loguru import logger
 from pydantic import BaseModel as Base
 
-from loguru import logger
-from contextlib import contextmanager
+from .circuit import OnionCircuit
+from .client import ContainerBase, ContainerOptions
+from .mount import MountFile, MountPoint
 
 HAPROXY_IMAGE = "haproxy:2.2.3"
 
 
 class HAProxyOptions(Base):
+    """Handles options for HAProxy docker instance.
+
+    Attributes:
+        max_connections (int): Maximum per-process number of concurrent connections.
+        timeout_client (int): Maximum inactivity time on the client side.
+        timeout_connect (int): Maximum time to wait for a connection attempt to a server
+            to succeed.
+        timeout_queue (int): Maximum time to wait in the queue for a connection slot
+            to be free.
+        timeout_server (int): Maximum inactivity time on the server side.
+        listen_host_port (int): Frontend port to the proxy.
+        backend_name (str): Name of Backend section.
+        dashboard_bind_port (int): Port to open to reach the HAProxy dashboard.
+        dashboard_refresh_rate (int): Refresh rate of the HAProxy dashboard page.
+        onions (List[Container]): Each onion container that is connected to the whaornet.
+    """
+
     max_connections: int = 4096
 
     timeout_client: int = 3600
@@ -30,40 +49,61 @@ class HAProxyOptions(Base):
     onions: List[Container]
 
     class Config:
+        """Pydantic Configuration."""
+
         arbitrary_types_allowed = True
 
     @property
-    def ports(self):
+    def ports(self) -> List[int]:
+        """Ports which will be used to expose on the local network."""
         return [self.listen_host_port, self.dashboard_bind_port]
 
 
 class Balancer(ContainerBase):
+    """HAProxy Load Balancer.
+
+    Attributes:
+        haproxy_options (HAProxyOptions): HAProxy options object.
+        container_options (ContainerOptions): Container options for the HA proxy instance.
+    """
+
     haproxy_options: HAProxyOptions
 
     container_options: ContainerOptions = ContainerOptions(image=HAPROXY_IMAGE)
 
     class Config:
+        """Pydantic Configuration."""
+
         arbitrary_types_allowed = True
 
     @property
-    def address(self):
+    def address(self) -> str:
+        """Return socks5 address to poxy requests through."""
         return f"socks5://localhost:{self.haproxy_options.listen_host_port}"
 
     @property
-    def dashboard_address(self):
+    def dashboard_address(self) -> str:
+        """Return full dashboard address."""
         return f"http://localhost:{self.haproxy_options.dashboard_bind_port}"
 
     @property
-    def proxies(self):
+    def proxies(self) -> Dict[str, str]:
+        """Return proxies to mount onto a requests session."""
         return {
             "http": self.address,
             "https": self.address,
         }
 
-    def add_mount_point(self, mount: MountFile):
+    def add_mount_point(self, mount: MountFile) -> None:
+        """Mount a volume into the HAProxy container.
+
+        Args:
+            mount (MountFile): File to mount between the container and local file system.
+        """
         self.container_options.mounts.append(mount.mount)
 
-    def display_settings(self):
+    def display_settings(self) -> None:
+        """Log config settings to stdout."""
         logger.debug(
             "\n==================="
             "\nOnion Load Balancer"
@@ -74,7 +114,17 @@ class Balancer(ContainerBase):
 
 
 @contextmanager
-def OnionBalancer(onions, show_log=False):
+# pylint: disable=invalid-name
+def OnionBalancer(onions: List[OnionCircuit], show_log: bool = False) -> Balancer:
+    """Context manager which yields a started instance of an HAProxy docker container.
+
+    Args:
+        onions (List[OnionCircuit]): List of tor containers to load balance requests across.
+        show_log (bool): If True shows the HAProxies logs on start and stop.
+
+    Yields:
+        Balancer: A started instance of a HAProxy docker container.
+    """
     haproxy_options = HAProxyOptions(onions=onions)
 
     with MountPoint(
