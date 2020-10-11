@@ -1,4 +1,4 @@
-md5 a6be8475ef4e53beb0e487dae2f0bc59 content/index.md
+md5 9ce207c94d4c5fa82222a3c2b6cc79b1 content/index.md
 md5 44fe3b30000189178f74aa651a048bb9 content/quickstart.md
 md5 3163ed2cfb2faa5619c3536029a06117 content/examples/basics.md
 md5 9436791052ac0ba5fd75b33d5da3345f content/examples/extras.md
