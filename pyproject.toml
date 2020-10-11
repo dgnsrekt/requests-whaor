@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "requests-whaor"
-version = "0.1.0"
+version = "0.2.0"
 description = "Requests With High Availability Onion Router. For the filthiest web scrapers that have no time for rate-limits."
 authors = ["dgnsrekt <dgnsrekt@pm.me>"]
 readme = "README.md"
-homepage = "https://github.com/dgnsrekt/requests-whaor"
+homepage = "https://dgnsrekt.github.io/requests-whaor/"
 repository = "https://github.com/dgnsrekt/requests-whaor"
 license = "MIT"
 keywords=["requests", "tor", "haproxy", "docker", "rate-limit"]

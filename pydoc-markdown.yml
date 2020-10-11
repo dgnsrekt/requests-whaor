@@ -51,6 +51,9 @@ renderer:
         - title: Extras
           source: ./docs/markdown/examples/extra_example.md
 
+    - title: Changelog
+      name: changelog
+      source: CHANGELOG.md
 
     - title: API Documentation
       name: api
