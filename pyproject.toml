@@ -7,6 +7,7 @@ readme = "README.md"
 homepage = "https://github.com/dgnsrekt/requests-whaor"
 repository = "https://github.com/dgnsrekt/requests-whaor"
 license = "MIT"
+keywords=["requests", "tor", "haproxy", "docker", "rate-limit"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
