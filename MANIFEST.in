@@ -1,0 +1,12 @@
+include *.lock
+include *.py
+include *.yml
+include .flake8
+recursive-include docs *.gif
+recursive-include docs *.md
+recursive-include docs *.txt
+recursive-include docs *.yml
+recursive-include examples *.jinja
+recursive-include examples *.py
+recursive-include temporary_files *.gitkeep
+recursive-include tests *.py
