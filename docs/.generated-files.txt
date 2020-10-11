@@ -1,4 +1,4 @@
-md5 8969469a3a7a476acfdfc5e8ce5ef3e9 content/index.md
+md5 a6be8475ef4e53beb0e487dae2f0bc59 content/index.md
 md5 44fe3b30000189178f74aa651a048bb9 content/quickstart.md
 md5 3163ed2cfb2faa5619c3536029a06117 content/examples/basics.md
 md5 9436791052ac0ba5fd75b33d5da3345f content/examples/extras.md
@@ -9,4 +9,4 @@ md5 898fd13f0dfb01f9d4e1167ddc309e73 content/api/core-module.md
 md5 2fb7fa7c01ed5e2e70056cedcfdbf46a content/api/mount-module.md
 md5 af4f7b6632fb418c2970748f534c5a48 content/api/network-module.md
 md5 3ebfed99686212cccb3916b9e5e500d7 content/api/paths-module.md
-md5 03e6e41e25ff6d81d68181f8ef17b8e8 mkdocs.yml
+md5 4f6a49ac81bed9ac6ebf409d40c46af7 mkdocs.yml

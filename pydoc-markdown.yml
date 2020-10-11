@@ -33,7 +33,7 @@ renderer:
   site_name: requests_whaor
   clean_render: True
   pages:
-    - title: Overview
+    - title: Home
       name: index
       source: README.md
 
