@@ -31,6 +31,7 @@ nav:
 - Examples:
   - Basics: examples/basics.md
   - Extras: examples/extras.md
+  - Call Options Watchlist: examples/call-options-watchlist.md
 - Changelog: changelog.md
 - API Documentation:
   - Balancer Module: api/balancer-module.md
