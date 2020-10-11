@@ -13,7 +13,6 @@ from requests.exceptions import (  # pylint: disable=redefined-builtin
     ProxyError,
     Timeout,
 )
-from requests.models import Response as RequestsResponse
 
 from .balancer import Balancer, OnionBalancer
 from .circuit import OnionCircuit, OnionCircuits
@@ -55,7 +54,9 @@ class Requestor:
         """Rotating proxy frontend input address."""
         return self.onion_balancer.proxies
 
-    def get(self, url: str, *args, **kwargs) -> Optional[RequestsResponse]:  # noqa: ANN002, ANN003
+    def get(
+        self, url: str, *args, **kwargs  # noqa: ANN002, ANN003
+    ) -> Optional[requests.models.Response]:
         """Overload requests.get method.
 
         This will pass in the rotating proxy host address and timeout into the requests.get
@@ -63,12 +64,13 @@ class Requestor:
         and bad status_codes. Each time there is a failure it will try a new request with
         a new ip address.
 
-        url (str): url to send the get request.
-        *args: arguments to pass to requests.get() method.
-        **kwargs: keyword arguments to pass to requests.get() method.
+        Args:
+            url (str): url to send the get request.
+            *args: arguments to pass to requests.get() method.
+            **kwargs: keyword arguments to pass to requests.get() method.
 
         Returns:
-            RequestsResponse: If found else None.
+            Response: If a response is found else None.
         """
         retries = self.max_retries
 
@@ -155,9 +157,11 @@ def RequestsWhaor(  # pylint: disable=invalid-name, too-many-arguments
 
             network.connect_container(onion_balancer.container_id, onion_balancer.container_name)
 
+            pause(5)
+
             logger.info(f"Dashboard Address: {onion_balancer.dashboard_address}")
 
-            pause(5)
+            pause(1)
 
             yield Requestor(
                 onions=onions,
