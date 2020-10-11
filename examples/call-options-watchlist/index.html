@@ -1,0 +1,1128 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.0.2">
+    
+    
+      
+        <title>Call Options Watchlist - requests_whaor</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.38780c08.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f72e892.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ef5552">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="red">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-to-build-a-one-delta-otm-call-options-watchlist-from-twitter-cashtags" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="requests_whaor" class="md-header-nav__button md-logo" aria-label="requests_whaor">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            requests_whaor
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Call Options Watchlist
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/dgnsrekt/requests-whaor/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="requests_whaor" class="md-nav__button md-logo" aria-label="requests_whaor">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    requests_whaor
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/dgnsrekt/requests-whaor/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../quickstart/" class="md-nav__link">
+      Quickstart
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Examples
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Examples" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../basics/" class="md-nav__link">
+      Basics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../extras/" class="md-nav__link">
+      Extras
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Call Options Watchlist
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Call Options Watchlist
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    Dependencies
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-preparation" class="md-nav__link">
+    Environment Preparation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scrape-twitter-and-build-a-watchlist" class="md-nav__link">
+    Scrape Twitter and build a watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-section" class="md-nav__link">
+    Final Section
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-script" class="md-nav__link">
+    Full Script
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../changelog/" class="md-nav__link">
+      Changelog
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      API Documentation
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        API Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api/balancer-module/" class="md-nav__link">
+      Balancer Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api/circuit-module/" class="md-nav__link">
+      Circuit Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api/client-module/" class="md-nav__link">
+      Client Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api/core-module/" class="md-nav__link">
+      Core Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api/mount-module/" class="md-nav__link">
+      Mount Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api/network-module/" class="md-nav__link">
+      Network Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api/paths-module/" class="md-nav__link">
+      Paths Module
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    Dependencies
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-preparation" class="md-nav__link">
+    Environment Preparation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scrape-twitter-and-build-a-watchlist" class="md-nav__link">
+    Scrape Twitter and build a watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-section" class="md-nav__link">
+    Final Section
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-script" class="md-nav__link">
+    Full Script
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/dgnsrekt/requests-whaor/edit/master/docs/examples/call-options-watchlist.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="how-to-build-a-one-delta-otm-call-options-watchlist-from-twitter-cashtags">How to build a one delta OTM call options watchlist from twitter cashtags.</h1>
+<h2 id="overview">Overview</h2>
+<ol>
+<li>First, we will scrape a users tweets for cashtags with <a href="https://github.com/dgnsrekt/nitter_scraper/">nitter_scraper</a></li>
+<li>Next, we will prepare and clean the tweet data to build a watchlist.</li>
+<li>After that, we will startup a network of tor nodes behind a reverse proxy, to bypass the yahoo finance rate limit, using <a href="https://github.com/dgnsrekt/requests-whaor/">requests-whaor</a></li>
+<li>Last, we will download, clean, and concatenate all the options data into a single DataFrame.</li>
+</ol>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li><a href="https://docs.docker.com/engine/">Docker Engine</a> installed.</li>
+<li>python ^3.8</li>
+<li><a href="https://python-poetry.org/">poetry</a></li>
+</ul>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li><a href="https://github.com/dgnsrekt/yfs/">yfs</a></li>
+<li><a href="https://github.com/dgnsrekt/nitter_scraper/">nitter_scraper</a></li>
+<li><a href="https://github.com/dgnsrekt/requests-whaor/">requests-whaor</a></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>requests-whaor will create multiple TOR nodes enclosed in docker containers to proxy your requests.</p>
+</div>
+<h2 id="environment-preparation">Environment Preparation</h2>
+<p>Run the following commands to build a folder and initiate a poetry project.</p>
+<p><div class="highlight"><pre><span></span><code>$ mkdir yfs_watchlist
+$ <span class="nb">cd</span> yfs_watchlist
+$ poetry init
+</code></pre></div>
+Keep hitting the enter button until you are out of the poetry init prompt.</p>
+<p>Now lets add the dependencies.</p>
+<div class="highlight"><pre><span></span><code>$ poetry add nitter-scraper
+$ poetry add requests-whaor
+$ poetry add yfs
+</code></pre></div>
+<p>Create options_bot.py</p>
+<p><div class="highlight"><pre><span></span><code>$ touch options_bot.py
+</code></pre></div>
+Open options_bot.py in your favorite editor.</p>
+<h2 id="imports">Imports</h2>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">as_completed</span><span class="p">,</span> <span class="n">ThreadPoolExecutor</span>
+</code></pre></div>
+The ThreadPoolExecutor is used to call fuzzy_search and get_options_page functions asynchronously with a pool of threads.</p>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">nitter_scraper</span> <span class="kn">import</span> <span class="n">NitterScraper</span>
+</code></pre></div>
+The nitter_scraper library is used to scrape tweets.</p>
+<p><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span>
+</code></pre></div>
+The pandas library is used to clean and concatenate the DataFrames.</p>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">requests_whaor</span> <span class="kn">import</span> <span class="n">RequestsWhaor</span>
+</code></pre></div>
+The requests_whaor library will supply a rotating proxy server to send our requests through, giving each request a unique IP address. If a request times out or gets a error code from the server it will retry with another IP address.</p>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">yfs</span> <span class="kn">import</span> <span class="n">fuzzy_search</span><span class="p">,</span> <span class="n">get_options_page</span>
+</code></pre></div>
+Last we use these yfs functions to search for valid symbols and get options data.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">as_completed</span><span class="p">,</span> <span class="n">ThreadPoolExecutor</span>
+
+<span class="kn">from</span> <span class="nn">nitter_scraper</span> <span class="kn">import</span> <span class="n">NitterScraper</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">requests_whaor</span> <span class="kn">import</span> <span class="n">RequestsWhaor</span>
+<span class="kn">from</span> <span class="nn">yfs</span> <span class="kn">import</span> <span class="n">fuzzy_search</span><span class="p">,</span> <span class="n">get_options_page</span>
+</code></pre></div>
+<p>The imports should look like this.</p>
+<h2 id="scrape-twitter-and-build-a-watchlist">Scrape Twitter and build a watchlist</h2>
+<div class="highlight"><pre><span></span><code><span class="n">watchlist</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Lets scrape the first page of eWhispers twitter feed for a list of symbols.</span>
+<span class="k">with</span> <span class="n">NitterScraper</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">8008</span><span class="p">)</span> <span class="k">as</span> <span class="n">nitter</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">nitter</span><span class="o">.</span><span class="n">get_tweets</span><span class="p">(</span><span class="s2">&quot;eWhispers&quot;</span><span class="p">,</span> <span class="n">pages</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">tweet</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">:</span>  <span class="c1"># Lets skip the pinned tweet.</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">tweet</span><span class="o">.</span><span class="n">is_retweet</span><span class="p">:</span>  <span class="c1"># Lets skip any retweets.</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">tweet</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">cashtags</span><span class="p">:</span>
+            <span class="c1"># Lets check if cashtags exists in the tweet then add them to the watchlist.</span>
+            <span class="n">watchlist</span> <span class="o">+=</span> <span class="n">tweet</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">cashtags</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Quick little progress bar so we don&#39;t get bored.</span>
+    <span class="nb">print</span><span class="p">()</span>  <span class="c1"># Print a new line when complete just to make things look a little cleaner.</span>
+
+
+<span class="n">watchlist</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">cashtag</span><span class="p">:</span> <span class="n">cashtag</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">watchlist</span><span class="p">)))</span>
+<span class="c1"># Lets sort, remove duplicates, and clean &#39;$&#39; strings from each symbol.</span>
+</code></pre></div>
+<p>Now we have a dynamically generated list of potentially interesting stock symbols.</p>
+<div class="highlight"><pre><span></span><code><span class="n">valid_symbols</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Used to store symbols validated with the fuzzy_search function.</span>
+<span class="n">call_chains</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Used to store all the found call option chains.</span>
+
+<span class="c1"># Decide on how many threads and proxies your computer can handle</span>
+<span class="n">MAX_THREADS</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="c1"># Each proxy is a tor circuit running inside a separate docker container.</span>
+<span class="n">MAX_PROXIES</span> <span class="o">=</span> <span class="mi">6</span>
+</code></pre></div>
+<p>Now on to the meat of the code.</p>
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">RequestsWhaor</span><span class="p">(</span><span class="n">onion_count</span><span class="o">=</span><span class="n">MAX_PROXIES</span><span class="p">,</span> <span class="n">max_threads</span><span class="o">=</span><span class="n">MAX_THREADS</span><span class="p">)</span> <span class="k">as</span> <span class="n">request_whaor</span><span class="p">:</span>
+    <span class="c1"># RequestsWhaor will spin up a network of TOR nodes we will use as a rotating proxy.</span>
+
+    <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">MAX_THREADS</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+        <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                <span class="n">fuzzy_search</span><span class="p">,</span> <span class="n">ticker</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">request_whaor</span>
+            <span class="p">)</span>  <span class="c1"># ^--Here we pass request_whaor as a session like object for yfs fuzzy_search.</span>
+            <span class="k">for</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="n">watchlist</span>
+        <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Quick progress bar.</span>
+
+            <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                <span class="c1"># Now we append the results to the valid_symbols list.</span>
+                <span class="n">valid_symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="c1"># Lets get the raw symbol from each ValidSymbol object.</span>
+        <span class="n">valid_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">ticker</span><span class="o">.</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="n">valid_symbols</span><span class="p">]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;found&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_symbols</span><span class="p">))</span>  <span class="c1"># Number of valid symbols found.</span>
+
+        <span class="n">request_whaor</span><span class="o">.</span><span class="n">restart_onions</span><span class="p">()</span>  <span class="c1"># Lets get a fresh pool of proxies before the next step.</span>
+
+        <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                <span class="n">get_options_page</span><span class="p">,</span>
+                <span class="n">ticker</span><span class="p">,</span>
+                <span class="n">after_days</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>  <span class="c1"># Lets get options that have at least 60 days before expiring.</span>
+                <span class="n">first_chain</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># We only want the first expiration with all strike prices.</span>
+                <span class="n">use_fuzzy_search</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># We did fuzzy search already no need to do it again.</span>
+                <span class="n">session</span><span class="o">=</span><span class="n">request_whaor</span><span class="p">,</span>  <span class="c1"># pass request_whaor as a session like object to yfs.</span>
+                <span class="n">page_not_found_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># return None if the symbol doesn&#39;t have an option page.</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="c1"># Pass a 5 second timeout to the session.</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="n">valid_symbols</span>
+        <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Progress bar.</span>
+
+                <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">calls</span><span class="p">:</span>
+                        <span class="c1"># If the results have a call option chain we will append it to the list.</span>
+                        <span class="n">call_chains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">calls</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="c1"># We will pass on any exceptions.</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a href="https://docs.python.org/3/library/concurrent.futures.html">ThreadPoolExecutor information here.</a></p>
+</div>
+<h2 id="final-section">Final Section</h2>
+<ul>
+<li>First, iterate over the result.</li>
+<li>Then, convert each chain into a dataframe.</li>
+<li>Next, get the first out of the money option and append it to a list.</li>
+<li>After that, concatenate the list of single option contract dataframes into a single dataframe.</li>
+<li>Now lets, drop some columns and sort by implied volatility to make things look pretty.</li>
+<li>Finally, print the results.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">first_otm_strike</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">call_chains</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">dataframe</span>
+    <span class="n">otm</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;in_the_money&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">otm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">first_otm_strike</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">otm</span><span class="p">)</span>
+
+<span class="n">final</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">first_otm_strike</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;contract_name&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;implied_volatility&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">final</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+</code></pre></div>
+<p>Now we have a single dataframe of one delta OTM call options built from a dynamically generated watch list.</p>
+<details class="success"><summary>Output</summary><div class="highlight"><pre><span></span><code>index symbol contract_type           expiration_date  in_the_money  strike  last_price    bid    ask  change percent_change volume  open_interest  implied_volatility
+<span class="m">0</span>      <span class="m">122</span>    SNX          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">155</span>.0        <span class="m">5</span>.92   <span class="m">0</span>.00   <span class="m">0</span>.00    <span class="m">0</span>.00            NaN      <span class="m">7</span>           <span class="m">19</span>.0                <span class="m">1</span>.56
+<span class="m">1</span>       <span class="m">10</span>    AZZ          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False    <span class="m">40</span>.0        <span class="m">2</span>.00   <span class="m">0</span>.00   <span class="m">0</span>.00    <span class="m">0</span>.00           None      <span class="m">1</span>            <span class="m">0</span>.0                <span class="m">3</span>.13
+<span class="m">2</span>      <span class="m">133</span>   USAT          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">10</span>.0        <span class="m">1</span>.25   <span class="m">0</span>.00   <span class="m">0</span>.00    <span class="m">0</span>.00           None      <span class="m">2</span>           <span class="m">41</span>.0               <span class="m">12</span>.50
+<span class="m">3</span>      <span class="m">116</span>   SINA          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">45</span>.0        <span class="m">0</span>.05   <span class="m">0</span>.05   <span class="m">0</span>.50    <span class="m">0</span>.00            NaN      <span class="m">5</span>           <span class="m">59</span>.0               <span class="m">18</span>.36
+<span class="m">4</span>       <span class="m">71</span>    JNJ          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">155</span>.0        <span class="m">3</span>.75   <span class="m">3</span>.70   <span class="m">3</span>.80    <span class="m">0</span>.55          <span class="m">17</span>.19    <span class="m">150</span>         <span class="m">3168</span>.0               <span class="m">21</span>.05
+<span class="m">5</span>       <span class="m">94</span>    PEP          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">140</span>.0        <span class="m">4</span>.26   <span class="m">4</span>.15   <span class="m">4</span>.45    <span class="m">0</span>.10            <span class="m">2</span>.4     <span class="m">38</span>         <span class="m">4826</span>.0               <span class="m">21</span>.51
+<span class="m">6</span>       <span class="m">31</span>   COST          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">370</span>.0       <span class="m">18</span>.60  <span class="m">18</span>.50  <span class="m">18</span>.95    <span class="m">1</span>.46           <span class="m">8</span>.52     <span class="m">90</span>         <span class="m">1326</span>.0               <span class="m">25</span>.29
+<span class="m">7</span>       <span class="m">55</span>    GIS          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">62</span>.5        <span class="m">2</span>.99   <span class="m">2</span>.57   <span class="m">2</span>.99    <span class="m">0</span>.39             <span class="m">15</span>      <span class="m">7</span>         <span class="m">1501</span>.0               <span class="m">25</span>.78
+<span class="m">8</span>       <span class="m">59</span>   INFO          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">80</span>.0        <span class="m">3</span>.46   <span class="m">2</span>.65   <span class="m">3</span>.10    <span class="m">0</span>.00           None      <span class="m">1</span>          <span class="m">314</span>.0               <span class="m">27</span>.06
+<span class="m">9</span>       <span class="m">95</span>    PGR          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">100</span>.0        <span class="m">5</span>.15   <span class="m">5</span>.00   <span class="m">5</span>.60    <span class="m">0</span>.65          <span class="m">14</span>.44     <span class="m">29</span>          <span class="m">613</span>.0               <span class="m">27</span>.55
+<span class="m">10</span>      <span class="m">81</span>    MKC          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">200</span>.0        <span class="m">7</span>.50   <span class="m">7</span>.10   <span class="m">7</span>.70    <span class="m">0</span>.50           <span class="m">7</span>.14      <span class="m">6</span>          <span class="m">188</span>.0               <span class="m">27</span>.72
+<span class="m">11</span>       <span class="m">0</span>    ACN          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">230</span>.0       <span class="m">12</span>.50  <span class="m">12</span>.40  <span class="m">13</span>.20    <span class="m">1</span>.50          <span class="m">13</span>.64     <span class="m">63</span>          <span class="m">596</span>.0               <span class="m">29</span>.38
+<span class="m">12</span>      <span class="m">27</span>    CAG          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">38</span>.0        <span class="m">1</span>.54   <span class="m">1</span>.40   <span class="m">1</span>.60   -0.06          -3.75      <span class="m">2</span>          <span class="m">523</span>.0               <span class="m">29</span>.42
+<span class="m">13</span>      <span class="m">97</span>   PAYX          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">82</span>.5        <span class="m">3</span>.80   <span class="m">3</span>.80   <span class="m">4</span>.20    <span class="m">0</span>.00            NaN      <span class="m">4</span>         <span class="m">1391</span>.0               <span class="m">29</span>.74
+<span class="m">14</span>      <span class="m">93</span>   ORCL          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">62</span>.5        <span class="m">2</span>.53   <span class="m">2</span>.47   <span class="m">2</span>.60    <span class="m">0</span>.08           <span class="m">3</span>.27     <span class="m">27</span>         <span class="m">9815</span>.0               <span class="m">30</span>.14
+<span class="m">15</span>     <span class="m">139</span>   WABC          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">65</span>.0        <span class="m">0</span>.80   <span class="m">0</span>.75   <span class="m">1</span>.05    <span class="m">0</span>.00           None      <span class="m">2</span>           <span class="m">22</span>.0               <span class="m">30</span>.74
+<span class="m">16</span>      <span class="m">22</span>    BLK          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">620</span>.0       <span class="m">32</span>.10  <span class="m">28</span>.00  <span class="m">36</span>.20    <span class="m">1</span>.75           <span class="m">5</span>.77     <span class="m">46</span>          <span class="m">140</span>.0               <span class="m">31</span>.83
+<span class="m">17</span>      <span class="m">88</span>    NKE          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">135</span>.0        <span class="m">6</span>.85   <span class="m">6</span>.70   <span class="m">6</span>.85    <span class="m">0</span>.35           <span class="m">5</span>.38     <span class="m">92</span>         <span class="m">2130</span>.0               <span class="m">31</span>.89
+<span class="m">18</span>      <span class="m">74</span>    KSU          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">190</span>.0        <span class="m">8</span>.40   <span class="m">6</span>.20   <span class="m">9</span>.00    <span class="m">0</span>.78          <span class="m">10</span>.24      <span class="m">1</span>           <span class="m">57</span>.0               <span class="m">32</span>.46
+<span class="m">19</span>      <span class="m">21</span>     BK          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">40</span>.0        <span class="m">1</span>.20   <span class="m">1</span>.10   <span class="m">1</span>.25    <span class="m">0</span>.15          <span class="m">14</span>.29    <span class="m">150</span>         <span class="m">2705</span>.0               <span class="m">32</span>.86
+<span class="m">20</span>      <span class="m">50</span>    FRC          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False   <span class="m">125</span>.0        <span class="m">1</span>.66   <span class="m">8</span>.40   <span class="m">9</span>.20    <span class="m">0</span>.00            NaN      <span class="m">1</span>            <span class="m">4</span>.0               <span class="m">32</span>.98
+<span class="m">21</span>     <span class="m">144</span>    WNS          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">75</span>.0        <span class="m">1</span>.15   <span class="m">1</span>.45   <span class="m">1</span>.90    <span class="m">0</span>.00           None     <span class="m">48</span>          <span class="m">103</span>.0               <span class="m">33</span>.03
+<span class="m">22</span>      <span class="m">41</span>    DPZ          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">400</span>.0       <span class="m">18</span>.00  <span class="m">15</span>.00  <span class="m">18</span>.90   -7.10         -28.29    <span class="m">147</span>          <span class="m">265</span>.0               <span class="m">33</span>.77
+<span class="m">23</span>      <span class="m">28</span>   CASY          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False   <span class="m">185</span>.0       <span class="m">10</span>.90  <span class="m">10</span>.50  <span class="m">14</span>.20    <span class="m">0</span>.00           None    NaN            <span class="m">8</span>.0               <span class="m">34</span>.07
+<span class="m">24</span>     <span class="m">102</span>    PNC          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">120</span>.0        <span class="m">6</span>.30   <span class="m">5</span>.70   <span class="m">6</span>.20   -0.60           -8.7     <span class="m">21</span>          <span class="m">451</span>.0               <span class="m">34</span>.17
+<span class="m">25</span>     <span class="m">111</span>    RPM          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False    <span class="m">90</span>.0        <span class="m">5</span>.40   <span class="m">4</span>.00   <span class="m">6</span>.00    <span class="m">0</span>.00            NaN      <span class="m">2</span>          <span class="m">178</span>.0               <span class="m">34</span>.38
+<span class="m">26</span>      <span class="m">47</span>    FDS          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">330</span>.0       <span class="m">16</span>.01  <span class="m">14</span>.50  <span class="m">18</span>.50    <span class="m">0</span>.00           None      <span class="m">1</span>           <span class="m">38</span>.0               <span class="m">34</span>.64
+<span class="m">27</span>      <span class="m">61</span>   JBHT          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">140</span>.0        <span class="m">6</span>.50   <span class="m">6</span>.20   <span class="m">7</span>.60   -0.40           -5.8      <span class="m">2</span>           <span class="m">51</span>.0               <span class="m">34</span>.69
+<span class="m">28</span>      <span class="m">52</span>     GS          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">210</span>.0       <span class="m">13</span>.50  <span class="m">13</span>.40  <span class="m">13</span>.70   -0.89          -6.18    <span class="m">236</span>         <span class="m">3466</span>.0               <span class="m">34</span>.74
+<span class="m">29</span>      <span class="m">44</span>   FAST          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">47</span>.5        <span class="m">2</span>.75   <span class="m">2</span>.60   <span class="m">2</span>.95    <span class="m">0</span>.10           <span class="m">3</span>.77      <span class="m">5</span>          <span class="m">293</span>.0               <span class="m">34</span>.83
+<span class="m">30</span>     <span class="m">135</span>    UNH          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">330</span>.0       <span class="m">17</span>.84  <span class="m">15</span>.75  <span class="m">18</span>.80    <span class="m">3</span>.24          <span class="m">22</span>.19    <span class="m">100</span>         <span class="m">1289</span>.0               <span class="m">34</span>.84
+<span class="m">31</span>     <span class="m">121</span>    STZ          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">190</span>.0       <span class="m">10</span>.30  <span class="m">10</span>.10  <span class="m">11</span>.90    <span class="m">0</span>.50            <span class="m">5</span>.1     <span class="m">41</span>          <span class="m">744</span>.0               <span class="m">34</span>.92
+<span class="m">32</span>      <span class="m">19</span>    AZO          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False  <span class="m">1140</span>.0       <span class="m">72</span>.00  <span class="m">60</span>.90  <span class="m">68</span>.50    <span class="m">0</span>.00            NaN      <span class="m">1</span>            <span class="m">5</span>.0               <span class="m">35</span>.27
+<span class="m">33</span>     <span class="m">101</span>   PRGS          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">45</span>.0        <span class="m">0</span>.67   <span class="m">0</span>.60   <span class="m">0</span>.90    <span class="m">0</span>.00            NaN      <span class="m">6</span>          <span class="m">399</span>.0               <span class="m">35</span>.60
+<span class="m">34</span>      <span class="m">69</span>    JPM          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">105</span>.0        <span class="m">4</span>.55   <span class="m">4</span>.50   <span class="m">4</span>.65   -0.63         -12.16    <span class="m">280</span>        <span class="m">12567</span>.0               <span class="m">35</span>.66
+<span class="m">35</span>      <span class="m">65</span>   INFY          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">16</span>.0        <span class="m">0</span>.75   <span class="m">0</span>.70   <span class="m">0</span>.80    <span class="m">0</span>.15             <span class="m">25</span>     <span class="m">31</span>          <span class="m">328</span>.0               <span class="m">36</span>.08
+<span class="m">36</span>      <span class="m">84</span>     MS          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">50</span>.0        <span class="m">2</span>.52   <span class="m">2</span>.53   <span class="m">2</span>.58   -0.21          -7.69   <span class="m">2415</span>         <span class="m">1027</span>.0               <span class="m">36</span>.55
+<span class="m">37</span>      <span class="m">39</span>   CTAS          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">340</span>.0       <span class="m">19</span>.75  <span class="m">17</span>.10  <span class="m">21</span>.50    <span class="m">0</span>.00            NaN      <span class="m">2</span>           <span class="m">14</span>.0               <span class="m">36</span>.91
+<span class="m">38</span>      <span class="m">54</span>    HDS          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">45</span>.0        <span class="m">1</span>.80   <span class="m">1</span>.65   <span class="m">1</span>.90    <span class="m">0</span>.20           <span class="m">12</span>.5      <span class="m">3</span>          <span class="m">176</span>.0               <span class="m">37</span>.23
+<span class="m">39</span>      <span class="m">13</span>    BAC          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">26</span>.0        <span class="m">1</span>.31   <span class="m">1</span>.31   <span class="m">1</span>.37   -0.05          -3.68    <span class="m">937</span>        <span class="m">20691</span>.0               <span class="m">37</span>.55
+<span class="m">40</span>      <span class="m">33</span>   CALM          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">40</span>.0        <span class="m">1</span>.50   <span class="m">1</span>.40   <span class="m">1</span>.70   -0.40         -21.05     <span class="m">20</span>           <span class="m">49</span>.0               <span class="m">38</span>.09
+<span class="m">41</span>       <span class="m">7</span>   ASML          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">390</span>.0       <span class="m">28</span>.40  <span class="m">27</span>.40  <span class="m">30</span>.00    <span class="m">4</span>.50          <span class="m">18</span>.83      <span class="m">3</span>          <span class="m">479</span>.0               <span class="m">38</span>.13
+<span class="m">42</span>     <span class="m">114</span>   SCHW          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">39</span>.0        <span class="m">1</span>.89   <span class="m">1</span>.98   <span class="m">2</span>.19   -0.01          -0.53     <span class="m">39</span>          <span class="m">373</span>.0               <span class="m">38</span>.21
+<span class="m">43</span>      <span class="m">16</span>      C          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">45</span>.0        <span class="m">2</span>.95   <span class="m">2</span>.91   <span class="m">2</span>.97   -0.10          -3.28    <span class="m">165</span>        <span class="m">10174</span>.0               <span class="m">38</span>.57
+<span class="m">44</span>      <span class="m">60</span>   ISRG          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">740</span>.0       <span class="m">48</span>.00  <span class="m">43</span>.70  <span class="m">50</span>.40   <span class="m">13</span>.60          <span class="m">39</span>.53      <span class="m">5</span>          <span class="m">217</span>.0               <span class="m">40</span>.06
+<span class="m">45</span>     <span class="m">129</span>    TFC          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">45</span>.0        <span class="m">1</span>.97   <span class="m">1</span>.95   <span class="m">2</span>.25   -0.09          -4.37      <span class="m">2</span>         <span class="m">3577</span>.0               <span class="m">40</span>.09
+<span class="m">46</span>      <span class="m">56</span>   HELE          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">200</span>.0        <span class="m">7</span>.93   <span class="m">9</span>.80  <span class="m">12</span>.90    <span class="m">0</span>.00            NaN      <span class="m">2</span>           <span class="m">12</span>.0               <span class="m">40</span>.09
+<span class="m">47</span>      <span class="m">75</span>   LNDC          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">12</span>.5        <span class="m">0</span>.10   <span class="m">0</span>.05   <span class="m">0</span>.10   -0.05         -33.33      <span class="m">1</span>           <span class="m">56</span>.0               <span class="m">40</span>.23
+<span class="m">48</span>     <span class="m">137</span>    VFC          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">80</span>.0        <span class="m">4</span>.80   <span class="m">4</span>.90   <span class="m">5</span>.40    <span class="m">0</span>.00            NaN      <span class="m">7</span>          <span class="m">160</span>.0               <span class="m">40</span>.33
+<span class="m">49</span>      <span class="m">79</span>     LW          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">75</span>.0        <span class="m">5</span>.40   <span class="m">4</span>.80   <span class="m">5</span>.30   -0.60            -10      <span class="m">1</span>          <span class="m">251</span>.0               <span class="m">40</span>.44
+<span class="m">50</span>     <span class="m">123</span>    STT          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">67</span>.5        <span class="m">4</span>.70   <span class="m">4</span>.70   <span class="m">5</span>.10    <span class="m">1</span>.80          <span class="m">62</span>.07      <span class="m">2</span>          <span class="m">145</span>.0               <span class="m">40</span>.87
+<span class="m">51</span>     <span class="m">134</span>    USB          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">40</span>.0        <span class="m">2</span>.42   <span class="m">2</span>.19   <span class="m">2</span>.41   -0.19          -7.28     <span class="m">59</span>         <span class="m">3619</span>.0               <span class="m">40</span>.92
+<span class="m">52</span>       <span class="m">1</span>    ABM          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">40</span>.0        <span class="m">2</span>.11   <span class="m">1</span>.60   <span class="m">2</span>.00    <span class="m">0</span>.00           None      <span class="m">1</span>           <span class="m">90</span>.0               <span class="m">41</span>.53
+<span class="m">53</span>      <span class="m">48</span>    FDX          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">280</span>.0       <span class="m">19</span>.34  <span class="m">18</span>.95  <span class="m">19</span>.55   -0.96          -4.73    <span class="m">152</span>         <span class="m">2159</span>.0               <span class="m">41</span>.57
+<span class="m">54</span>       <span class="m">9</span>    AYI          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">100</span>.0        <span class="m">7</span>.90   <span class="m">5</span>.80   <span class="m">7</span>.10   -8.45         -51.68    <span class="m">125</span>           <span class="m">24</span>.0               <span class="m">42</span>.15
+<span class="m">55</span>      <span class="m">36</span>    CMC          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">23</span>.0        <span class="m">1</span>.50   <span class="m">1</span>.35   <span class="m">1</span>.50    <span class="m">0</span>.10           <span class="m">7</span>.14     <span class="m">24</span>         <span class="m">1212</span>.0               <span class="m">42</span>.33
+<span class="m">56</span>     <span class="m">107</span>    RGP          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False    <span class="m">12</span>.5        <span class="m">0</span>.75   <span class="m">0</span>.65   <span class="m">0</span>.85    <span class="m">0</span>.75           None     <span class="m">56</span>          <span class="m">347</span>.0               <span class="m">42</span>.53
+<span class="m">57</span>       <span class="m">8</span>   ADBE          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">505</span>.0       <span class="m">33</span>.63  <span class="m">34</span>.30  <span class="m">35</span>.90    <span class="m">3</span>.82          <span class="m">12</span>.81     <span class="m">30</span>         <span class="m">1044</span>.0               <span class="m">42</span>.76
+<span class="m">58</span>     <span class="m">125</span>   TCOM          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">33</span>.0        <span class="m">2</span>.10   <span class="m">1</span>.80   <span class="m">2</span>.03    <span class="m">0</span>.00            NaN     <span class="m">54</span>         <span class="m">2102</span>.0               <span class="m">42</span>.92
+<span class="m">59</span>     <span class="m">142</span>    WFC          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">27</span>.5        <span class="m">1</span>.02   <span class="m">1</span>.01   <span class="m">1</span>.07   -0.04          -3.77    <span class="m">550</span>        <span class="m">31241</span>.0               <span class="m">43</span>.31
+<span class="m">60</span>     <span class="m">130</span>    TSM          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">90</span>.0        <span class="m">6</span>.15   <span class="m">6</span>.00   <span class="m">6</span>.20    <span class="m">0</span>.45           <span class="m">7</span>.89    <span class="m">406</span>         <span class="m">1115</span>.0               <span class="m">43</span>.87
+<span class="m">61</span>      <span class="m">82</span>    MTN          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">250</span>.0        <span class="m">9</span>.00  <span class="m">11</span>.10  <span class="m">14</span>.90    <span class="m">0</span>.00            NaN      <span class="m">1</span>           <span class="m">45</span>.0               <span class="m">44</span>.12
+<span class="m">62</span>     <span class="m">138</span>   VRNT          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">55</span>.0        <span class="m">2</span>.80   <span class="m">2</span>.95   <span class="m">3</span>.30    <span class="m">0</span>.30             <span class="m">12</span>      <span class="m">2</span>         <span class="m">3136</span>.0               <span class="m">44</span>.12
+<span class="m">63</span>     <span class="m">141</span>    WBA          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">37</span>.5        <span class="m">2</span>.01   <span class="m">1</span>.58   <span class="m">2</span>.33   -0.18          -8.22      <span class="m">1</span>          <span class="m">370</span>.0               <span class="m">44</span>.92
+<span class="m">64</span>      <span class="m">42</span>    EDU          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">175</span>.0        <span class="m">7</span>.18  <span class="m">12</span>.60  <span class="m">13</span>.60    <span class="m">0</span>.00            NaN      <span class="m">1</span>           <span class="m">15</span>.0               <span class="m">45</span>.00
+<span class="m">65</span>      <span class="m">72</span>    LEN          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">85</span>.0        <span class="m">7</span>.30   <span class="m">7</span>.20   <span class="m">7</span>.40   -0.20          -2.67     <span class="m">22</span>          <span class="m">832</span>.0               <span class="m">45</span>.29
+<span class="m">66</span>      <span class="m">66</span>    JBL          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">37</span>.0        <span class="m">2</span>.45   <span class="m">2</span>.20   <span class="m">2</span>.65    <span class="m">0</span>.35          <span class="m">16</span>.67      <span class="m">1</span>           <span class="m">12</span>.0               <span class="m">46</span>.51
+<span class="m">67</span>      <span class="m">43</span>   EPAC          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False    <span class="m">20</span>.0        <span class="m">1</span>.55   <span class="m">1</span>.25   <span class="m">2</span>.05    <span class="m">0</span>.00           None    <span class="m">153</span>          <span class="m">289</span>.0               <span class="m">46</span>.63
+<span class="m">68</span>      <span class="m">35</span>   CVGW          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">70</span>.0        <span class="m">4</span>.00   <span class="m">3</span>.90   <span class="m">6</span>.00    <span class="m">0</span>.00           None    NaN            <span class="m">4</span>.0               <span class="m">46</span>.89
+<span class="m">69</span>      <span class="m">68</span>    KMX          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">95</span>.0        <span class="m">8</span>.00   <span class="m">7</span>.90   <span class="m">9</span>.20   -0.90         -10.11     <span class="m">17</span>          <span class="m">944</span>.0               <span class="m">47</span>.31
+<span class="m">70</span>      <span class="m">85</span>     MU          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">50</span>.0        <span class="m">4</span>.00   <span class="m">4</span>.00   <span class="m">4</span>.10    <span class="m">4</span>.00           None    <span class="m">444</span>          <span class="m">994</span>.0               <span class="m">48</span>.05
+<span class="m">71</span>      <span class="m">80</span>   LULU          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">350</span>.0       <span class="m">26</span>.80  <span class="m">26</span>.80  <span class="m">27</span>.25    <span class="m">3</span>.35          <span class="m">14</span>.29    <span class="m">123</span>          <span class="m">480</span>.0               <span class="m">48</span>.07
+<span class="m">72</span>      <span class="m">40</span>    DRI          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">105</span>.0        <span class="m">8</span>.80   <span class="m">8</span>.20   <span class="m">8</span>.80    <span class="m">0</span>.44           <span class="m">5</span>.26      <span class="m">3</span>          <span class="m">857</span>.0               <span class="m">48</span>.21
+<span class="m">73</span>      <span class="m">57</span>   HOMB          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">17</span>.5        <span class="m">0</span>.90   <span class="m">0</span>.70   <span class="m">1</span>.20    <span class="m">0</span>.00           None     <span class="m">55</span>          <span class="m">187</span>.0               <span class="m">49</span>.22
+<span class="m">74</span>      <span class="m">11</span>   APOG          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False    <span class="m">30</span>.0        <span class="m">1</span>.35   <span class="m">1</span>.40   <span class="m">1</span>.50    <span class="m">0</span>.22          <span class="m">19</span>.47      <span class="m">2</span>          <span class="m">204</span>.0               <span class="m">49</span>.71
+<span class="m">75</span>      <span class="m">73</span>   LEVI          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">16</span>.0        <span class="m">1</span>.20   <span class="m">1</span>.20   <span class="m">1</span>.25   -0.25         -17.24    <span class="m">100</span>         <span class="m">1362</span>.0               <span class="m">50</span>.44
+<span class="m">76</span>     <span class="m">140</span>     WB          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">45</span>.0        <span class="m">2</span>.88   <span class="m">2</span>.55   <span class="m">3</span>.10   -0.02          -0.69     <span class="m">16</span>         <span class="m">1531</span>.0               <span class="m">50</span>.46
+<span class="m">77</span>     <span class="m">143</span>    WOR          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">50</span>.0        <span class="m">3</span>.13   <span class="m">2</span>.15   <span class="m">3</span>.30    <span class="m">0</span>.23           <span class="m">7</span>.93      <span class="m">7</span>          <span class="m">359</span>.0               <span class="m">50</span>.76
+<span class="m">78</span>      <span class="m">67</span>    KBH          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">45</span>.0        <span class="m">2</span>.80   <span class="m">2</span>.60   <span class="m">2</span>.80    <span class="m">0</span>.44          <span class="m">18</span>.64     <span class="m">17</span>          <span class="m">271</span>.0               <span class="m">50</span>.98
+<span class="m">79</span>      <span class="m">26</span>   ALLY          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">28</span>.0        <span class="m">2</span>.57   <span class="m">2</span>.20   <span class="m">2</span>.59    <span class="m">0</span>.15            <span class="m">6</span>.2     <span class="m">35</span>         <span class="m">1403</span>.0               <span class="m">51</span>.07
+<span class="m">80</span>      <span class="m">99</span>    PHR          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">35</span>.0        <span class="m">2</span>.50   <span class="m">1</span>.85   <span class="m">2</span>.60    <span class="m">0</span>.30          <span class="m">13</span>.64      <span class="m">1</span>           <span class="m">49</span>.0               <span class="m">51</span>.51
+<span class="m">81</span>      <span class="m">17</span>   AVAV          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">75</span>.0        <span class="m">5</span>.00   <span class="m">4</span>.40   <span class="m">5</span>.20    <span class="m">0</span>.71          <span class="m">16</span>.55      <span class="m">4</span>          <span class="m">104</span>.0               <span class="m">51</span>.79
+<span class="m">82</span>      <span class="m">18</span>     BB          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False     <span class="m">5</span>.0        <span class="m">0</span>.31   <span class="m">0</span>.30   <span class="m">0</span>.33    <span class="m">0</span>.01           <span class="m">3</span>.33     <span class="m">18</span>         <span class="m">1416</span>.0               <span class="m">51</span>.95
+<span class="m">83</span>      <span class="m">34</span>    CMD          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">50</span>.0        <span class="m">2</span>.65   <span class="m">2</span>.75   <span class="m">3</span>.70    <span class="m">0</span>.00            NaN      <span class="m">3</span>            <span class="m">3</span>.0               <span class="m">52</span>.47
+<span class="m">84</span>      <span class="m">90</span>   NEOG          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">80</span>.0        <span class="m">7</span>.00   <span class="m">2</span>.50   <span class="m">7</span>.50    <span class="m">0</span>.00           None      <span class="m">2</span>           <span class="m">15</span>.0               <span class="m">54</span>.53
+<span class="m">85</span>     <span class="m">146</span>     ZS          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">155</span>.0       <span class="m">15</span>.85  <span class="m">14</span>.75  <span class="m">16</span>.65    <span class="m">1</span>.45          <span class="m">10</span>.07    <span class="m">115</span>         <span class="m">1113</span>.0               <span class="m">54</span>.60
+<span class="m">86</span>     <span class="m">109</span>   SCHL          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">22</span>.5        <span class="m">1</span>.45   <span class="m">1</span>.20   <span class="m">1</span>.70    <span class="m">0</span>.00            NaN      <span class="m">5</span>           <span class="m">13</span>.0               <span class="m">54</span>.79
+<span class="m">87</span>       <span class="m">6</span>   ANGO          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">12</span>.5        <span class="m">1</span>.02   <span class="m">0</span>.70   <span class="m">1</span>.25    <span class="m">0</span>.00            NaN      <span class="m">3</span>           <span class="m">36</span>.0               <span class="m">55</span>.47
+<span class="m">88</span>      <span class="m">49</span>    FUL          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False    <span class="m">50</span>.0        <span class="m">4</span>.20   <span class="m">2</span>.75   <span class="m">6</span>.30    <span class="m">0</span>.00           None      <span class="m">1</span>          <span class="m">126</span>.0               <span class="m">55</span>.47
+<span class="m">89</span>      <span class="m">30</span>   CBRL          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">120</span>.0        <span class="m">8</span>.60   <span class="m">7</span>.70  <span class="m">10</span>.60    <span class="m">0</span>.00           None      <span class="m">2</span>          <span class="m">141</span>.0               <span class="m">55</span>.54
+<span class="m">90</span>     <span class="m">120</span>    SLB          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">17</span>.5        <span class="m">1</span>.07   <span class="m">1</span>.03   <span class="m">1</span>.11    <span class="m">1</span>.07           None      <span class="m">8</span>           <span class="m">58</span>.0               <span class="m">55</span>.76
+<span class="m">91</span>     <span class="m">147</span>   ZUMZ          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False    <span class="m">35</span>.0        <span class="m">2</span>.66   <span class="m">2</span>.65   <span class="m">3</span>.00    <span class="m">0</span>.00            NaN      <span class="m">2</span>           <span class="m">37</span>.0               <span class="m">56</span>.10
+<span class="m">92</span>      <span class="m">24</span>   CAMP          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">10</span>.0        <span class="m">0</span>.20   <span class="m">0</span>.00   <span class="m">0</span>.40    <span class="m">0</span>.00           None     <span class="m">10</span>          <span class="m">570</span>.0               <span class="m">56</span>.25
+<span class="m">93</span>      <span class="m">98</span>    OSH          call <span class="m">2021</span>-04-16 <span class="m">00</span>:00:00+00:00         False    <span class="m">65</span>.0        <span class="m">4</span>.76   <span class="m">2</span>.50   <span class="m">6</span>.30    <span class="m">4</span>.76           None    <span class="m">100</span>          <span class="m">101</span>.0               <span class="m">56</span>.38
+<span class="m">94</span>      <span class="m">64</span>    HQY          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">60</span>.0        <span class="m">3</span>.50   <span class="m">3</span>.40   <span class="m">3</span>.70    <span class="m">0</span>.00            NaN      <span class="m">1</span>          <span class="m">584</span>.0               <span class="m">56</span>.49
+<span class="m">95</span>      <span class="m">32</span>   COUP          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False   <span class="m">310</span>.0       <span class="m">29</span>.00  <span class="m">27</span>.30  <span class="m">28</span>.60    <span class="m">5</span>.33          <span class="m">22</span>.52      <span class="m">7</span>           <span class="m">78</span>.0               <span class="m">57</span>.75
+<span class="m">96</span>      <span class="m">77</span>   LMNR          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">15</span>.0        <span class="m">1</span>.25   <span class="m">1</span>.05   <span class="m">1</span>.95    <span class="m">0</span>.00           None      <span class="m">2</span>            <span class="m">2</span>.0               <span class="m">58</span>.20
+<span class="m">97</span>     <span class="m">127</span>    THO          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">97</span>.5        <span class="m">9</span>.00   <span class="m">9</span>.20   <span class="m">9</span>.70   -6.20         -40.79     <span class="m">11</span>           <span class="m">27</span>.0               <span class="m">58</span>.96
+<span class="m">98</span>     <span class="m">110</span>     RH          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">380</span>.0       <span class="m">44</span>.15  <span class="m">41</span>.60  <span class="m">43</span>.30   -0.07          -0.16      <span class="m">8</span>          <span class="m">412</span>.0               <span class="m">60</span>.54
+<span class="m">99</span>      <span class="m">89</span>     NG          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">12</span>.0        <span class="m">0</span>.77   <span class="m">0</span>.85   <span class="m">1</span>.05    <span class="m">0</span>.00            NaN     <span class="m">20</span>         <span class="m">1163</span>.0               <span class="m">60</span>.64
+<span class="m">100</span>     <span class="m">37</span>   CMTL          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">17</span>.5        <span class="m">1</span>.75   <span class="m">1</span>.55   <span class="m">1</span>.70    <span class="m">0</span>.55          <span class="m">45</span>.83      <span class="m">1</span>          <span class="m">312</span>.0               <span class="m">60</span>.94
+<span class="m">101</span>      <span class="m">5</span>    AEO          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">16</span>.0        <span class="m">1</span>.70   <span class="m">1</span>.55   <span class="m">1</span>.80   -0.20         -10.53     <span class="m">20</span>          <span class="m">270</span>.0               <span class="m">62</span>.40
+<span class="m">102</span>    <span class="m">112</span>   SCWX          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">12</span>.5        <span class="m">1</span>.00   <span class="m">1</span>.15   <span class="m">1</span>.30    <span class="m">0</span>.00           None     <span class="m">61</span>          <span class="m">148</span>.0               <span class="m">62</span>.70
+<span class="m">103</span>    <span class="m">103</span>   RFIL          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">5</span>.0        <span class="m">0</span>.35   <span class="m">0</span>.30   <span class="m">0</span>.50    <span class="m">0</span>.00           None      <span class="m">9</span>          <span class="m">122</span>.0               <span class="m">63</span>.67
+<span class="m">104</span>    <span class="m">148</span>   WORK          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">32</span>.0        <span class="m">3</span>.00   <span class="m">2</span>.95   <span class="m">3</span>.05    <span class="m">0</span>.51          <span class="m">20</span>.48    <span class="m">608</span>         <span class="m">8478</span>.0               <span class="m">63</span>.84
+<span class="m">105</span>      <span class="m">4</span>     AA          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">13</span>.0        <span class="m">1</span>.26   <span class="m">1</span>.16   <span class="m">1</span>.24    <span class="m">0</span>.00            NaN      <span class="m">6</span>          <span class="m">145</span>.0               <span class="m">64</span>.70
+<span class="m">106</span>     <span class="m">29</span>   CHWY          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">65</span>.0        <span class="m">6</span>.90   <span class="m">6</span>.80   <span class="m">6</span>.95    <span class="m">1</span>.31          <span class="m">23</span>.43    <span class="m">449</span>         <span class="m">3579</span>.0               <span class="m">65</span>.43
+<span class="m">107</span>    <span class="m">119</span>   SLQT          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">20</span>.0        <span class="m">2</span>.40   <span class="m">2</span>.35   <span class="m">2</span>.60   -0.20          -7.69     <span class="m">12</span>          <span class="m">361</span>.0               <span class="m">65</span>.63
+<span class="m">108</span>     <span class="m">38</span>    DAL          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">33</span>.0        <span class="m">3</span>.65   <span class="m">3</span>.55   <span class="m">3</span>.80    <span class="m">0</span>.00            NaN     <span class="m">19</span>         <span class="m">1220</span>.0               <span class="m">66</span>.26
+<span class="m">109</span>    <span class="m">126</span>   SNBR          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">60</span>.0        <span class="m">3</span>.50   <span class="m">4</span>.20   <span class="m">5</span>.10    <span class="m">0</span>.00            NaN      <span class="m">5</span>          <span class="m">129</span>.0               <span class="m">66</span>.75
+<span class="m">110</span>    <span class="m">117</span>    SGH          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">30</span>.0        <span class="m">1</span>.00   <span class="m">0</span>.50   <span class="m">2</span>.25   -0.05          -4.76      <span class="m">1</span>           <span class="m">79</span>.0               <span class="m">68</span>.07
+<span class="m">111</span>    <span class="m">131</span>   UEPS          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">4</span>.0        <span class="m">0</span>.38   <span class="m">0</span>.15   <span class="m">0</span>.40    <span class="m">0</span>.00           None     <span class="m">63</span>          <span class="m">326</span>.0               <span class="m">68</span>.36
+<span class="m">112</span>     <span class="m">87</span>    NAV          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">46</span>.0        <span class="m">2</span>.70   <span class="m">0</span>.20   <span class="m">5</span>.00    <span class="m">2</span>.70           None      <span class="m">3</span>            <span class="m">0</span>.0               <span class="m">70</span>.92
+<span class="m">113</span>     <span class="m">86</span>   NCNO          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False    <span class="m">80</span>.0       <span class="m">13</span>.54  <span class="m">13</span>.00  <span class="m">13</span>.90    <span class="m">0</span>.84           <span class="m">6</span>.61      <span class="m">8</span>           <span class="m">52</span>.0               <span class="m">71</span>.03
+<span class="m">114</span>    <span class="m">124</span>   TACO          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">10</span>.0        <span class="m">0</span>.94   <span class="m">0</span>.80   <span class="m">1</span>.05    <span class="m">0</span>.09          <span class="m">10</span>.59     <span class="m">14</span>          <span class="m">893</span>.0               <span class="m">71</span>.09
+<span class="m">115</span>    <span class="m">132</span>   UNFI          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False    <span class="m">17</span>.5        <span class="m">2</span>.75   <span class="m">2</span>.50   <span class="m">3</span>.00    <span class="m">0</span>.05           <span class="m">1</span>.85     <span class="m">58</span>          <span class="m">550</span>.0               <span class="m">72</span>.07
+<span class="m">116</span>     <span class="m">78</span>   MCFT          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">20</span>.0        <span class="m">2</span>.95   <span class="m">2</span>.55   <span class="m">3</span>.40    <span class="m">0</span>.00            NaN      <span class="m">1</span>           <span class="m">16</span>.0               <span class="m">72</span>.75
+<span class="m">117</span>    <span class="m">115</span>   SFIX          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">32</span>.0        <span class="m">3</span>.39   <span class="m">3</span>.65   <span class="m">3</span>.85   -0.20          -5.57     <span class="m">24</span>          <span class="m">277</span>.0               <span class="m">73</span>.05
+<span class="m">118</span>     <span class="m">62</span>    HMY          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">6</span>.0        <span class="m">0</span>.90   <span class="m">0</span>.75   <span class="m">1</span>.00    <span class="m">0</span>.20          <span class="m">28</span>.57     <span class="m">24</span>         <span class="m">1835</span>.0               <span class="m">73</span>.24
+<span class="m">119</span>    <span class="m">104</span>   REVG          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">10</span>.0        <span class="m">0</span>.50   <span class="m">0</span>.45   <span class="m">1</span>.20    <span class="m">0</span>.00           None      <span class="m">5</span>           <span class="m">43</span>.0               <span class="m">73</span>.44
+<span class="m">120</span>    <span class="m">100</span>   PTON          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">125</span>.0       <span class="m">19</span>.00  <span class="m">17</span>.50  <span class="m">19</span>.00    <span class="m">3</span>.87          <span class="m">25</span>.58    <span class="m">198</span>         <span class="m">1423</span>.0               <span class="m">75</span>.85
+<span class="m">121</span>     <span class="m">14</span>   BBBY          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">22</span>.0        <span class="m">2</span>.67   <span class="m">2</span>.59   <span class="m">2</span>.69   -0.26          -8.87     <span class="m">12</span>          <span class="m">549</span>.0               <span class="m">77</span>.34
+<span class="m">122</span>    <span class="m">145</span>   VITL          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">40</span>.0        <span class="m">7</span>.00   <span class="m">5</span>.30   <span class="m">6</span>.90    <span class="m">0</span>.00            NaN      <span class="m">3</span>           <span class="m">10</span>.0               <span class="m">77</span>.73
+<span class="m">123</span>    <span class="m">136</span>    UAL          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">38</span>.0        <span class="m">4</span>.70   <span class="m">4</span>.60   <span class="m">4</span>.70    <span class="m">0</span>.40            <span class="m">9</span>.3     <span class="m">42</span>         <span class="m">1094</span>.0               <span class="m">78</span>.32
+<span class="m">124</span>     <span class="m">12</span>   APHA          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">6</span>.0        <span class="m">0</span>.82   <span class="m">0</span>.80   <span class="m">0</span>.85   -0.07          -7.87    <span class="m">150</span>         <span class="m">5032</span>.0               <span class="m">78</span>.71
+<span class="m">125</span>     <span class="m">70</span>   LAKE          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">25</span>.0        <span class="m">2</span>.85   <span class="m">2</span>.75   <span class="m">3</span>.10    <span class="m">0</span>.60          <span class="m">26</span>.67     <span class="m">68</span>          <span class="m">972</span>.0               <span class="m">79</span>.88
+<span class="m">126</span>    <span class="m">128</span>    TNP          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">10</span>.0        <span class="m">0</span>.50   <span class="m">0</span>.45   <span class="m">0</span>.60   -0.13         -20.63     <span class="m">61</span>          <span class="m">267</span>.0               <span class="m">80</span>.47
+<span class="m">127</span>    <span class="m">105</span>    RAD          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">11</span>.0        <span class="m">1</span>.30   <span class="m">1</span>.09   <span class="m">1</span>.53   -0.09          -6.47     <span class="m">45</span>          <span class="m">367</span>.0               <span class="m">80</span>.76
+<span class="m">128</span>     <span class="m">45</span>    EPM          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">2</span>.5        <span class="m">0</span>.30   <span class="m">0</span>.05   <span class="m">0</span>.50    <span class="m">0</span>.10             <span class="m">50</span>      <span class="m">2</span>           <span class="m">71</span>.0               <span class="m">85</span>.16
+<span class="m">129</span>     <span class="m">23</span>    BRC          call <span class="m">2021</span>-05-21 <span class="m">00</span>:00:00+00:00         False    <span class="m">45</span>.0        <span class="m">3</span>.40   <span class="m">0</span>.20  <span class="m">10</span>.00    <span class="m">0</span>.00           None   None           <span class="m">32</span>.0               <span class="m">86</span>.30
+<span class="m">130</span>     <span class="m">51</span>   GIII          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">17</span>.5        <span class="m">1</span>.45   <span class="m">1</span>.45   <span class="m">1</span>.70    <span class="m">0</span>.00            NaN      <span class="m">9</span>          <span class="m">492</span>.0               <span class="m">87</span>.74
+<span class="m">131</span>     <span class="m">25</span>    CCL          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">17</span>.5        <span class="m">2</span>.21   <span class="m">2</span>.10   <span class="m">2</span>.21    <span class="m">0</span>.09           <span class="m">4</span>.25   <span class="m">7323</span>        <span class="m">25364</span>.0               <span class="m">87</span>.94
+<span class="m">132</span>     <span class="m">46</span>    FLR          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">12</span>.5        <span class="m">1</span>.46   <span class="m">1</span>.35   <span class="m">1</span>.50   -0.03          -2.01    <span class="m">327</span>         <span class="m">4591</span>.0               <span class="m">89</span>.06
+<span class="m">133</span>     <span class="m">76</span>   LOVE          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">35</span>.0        <span class="m">6</span>.17   <span class="m">5</span>.40   <span class="m">6</span>.20    <span class="m">1</span>.17           <span class="m">23</span>.4      <span class="m">8</span>           <span class="m">72</span>.0               <span class="m">89</span>.40
+<span class="m">134</span>      <span class="m">3</span>   AGTC          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">7</span>.5        <span class="m">0</span>.50   <span class="m">0</span>.35   <span class="m">0</span>.65    <span class="m">0</span>.00           None     <span class="m">11</span>         <span class="m">2942</span>.0               <span class="m">93</span>.95
+<span class="m">135</span>     <span class="m">91</span>   MRTN          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">17</span>.5        <span class="m">1</span>.75   <span class="m">0</span>.00   <span class="m">2</span>.90    <span class="m">0</span>.00           None    NaN            <span class="m">2</span>.0               <span class="m">98</span>.39
+<span class="m">136</span>     <span class="m">63</span>    JKS          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">65</span>.0       <span class="m">10</span>.00   <span class="m">8</span>.70  <span class="m">11</span>.00    <span class="m">3</span>.80          <span class="m">61</span>.29    <span class="m">120</span>          <span class="m">277</span>.0               <span class="m">99</span>.05
+<span class="m">137</span>     <span class="m">96</span>   PLAY          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False    <span class="m">17</span>.5        <span class="m">2</span>.85   <span class="m">2</span>.65   <span class="m">2</span>.90    <span class="m">0</span>.05           <span class="m">1</span>.79    <span class="m">106</span>         <span class="m">1772</span>.0              <span class="m">100</span>.44
+<span class="m">138</span>     <span class="m">20</span>   BIGC          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False   <span class="m">100</span>.0       <span class="m">19</span>.24  <span class="m">19</span>.00  <span class="m">19</span>.35    <span class="m">2</span>.88           <span class="m">17</span>.6     <span class="m">70</span>         <span class="m">1036</span>.0              <span class="m">100</span>.83
+<span class="m">139</span>     <span class="m">92</span>   NTWK          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">5</span>.0        <span class="m">0</span>.10   <span class="m">0</span>.00   <span class="m">0</span>.30    <span class="m">0</span>.00            NaN      <span class="m">5</span>           <span class="m">68</span>.0              <span class="m">103</span>.52
+<span class="m">140</span>    <span class="m">108</span>   RLGT          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False     <span class="m">7</span>.5        <span class="m">0</span>.10   <span class="m">0</span>.00   <span class="m">0</span>.80    <span class="m">0</span>.00           None      <span class="m">2</span>           <span class="m">17</span>.0              <span class="m">112</span>.50
+<span class="m">141</span>     <span class="m">58</span>   ICMB          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">5</span>.0        <span class="m">0</span>.20   <span class="m">0</span>.00   <span class="m">0</span>.50    <span class="m">0</span>.00           None     <span class="m">30</span>          <span class="m">126</span>.0              <span class="m">117</span>.19
+<span class="m">142</span>    <span class="m">113</span>   SANW          call <span class="m">2021</span>-02-19 <span class="m">00</span>:00:00+00:00         False     <span class="m">2</span>.5        <span class="m">1</span>.11   <span class="m">0</span>.00   <span class="m">1</span>.25    <span class="m">0</span>.00           None     <span class="m">12</span>            <span class="m">6</span>.0              <span class="m">122</span>.66
+<span class="m">143</span>      <span class="m">2</span>    ACB          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False     <span class="m">6</span>.0        <span class="m">0</span>.75   <span class="m">0</span>.62   <span class="m">0</span>.88    <span class="m">0</span>.00            NaN    <span class="m">255</span>         <span class="m">1199</span>.0              <span class="m">124</span>.22
+<span class="m">144</span>     <span class="m">83</span>   MEIP          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False     <span class="m">5</span>.0        <span class="m">0</span>.20   <span class="m">0</span>.20   <span class="m">0</span>.25    <span class="m">0</span>.00           None      <span class="m">6</span>        <span class="m">12699</span>.0              <span class="m">127</span>.73
+<span class="m">145</span>    <span class="m">106</span>    QTT          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">5</span>.0        <span class="m">0</span>.25   <span class="m">0</span>.10   <span class="m">0</span>.35    <span class="m">0</span>.10          <span class="m">66</span>.67      <span class="m">3</span>          <span class="m">285</span>.0              <span class="m">132</span>.42
+<span class="m">146</span>     <span class="m">53</span>    GME          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">13</span>.0        <span class="m">2</span>.49   <span class="m">2</span>.45   <span class="m">2</span>.76    <span class="m">2</span>.49           None    <span class="m">101</span>           <span class="m">27</span>.0              <span class="m">143</span>.85
+<span class="m">147</span>    <span class="m">118</span>   SEAC          call <span class="m">2021</span>-01-15 <span class="m">00</span>:00:00+00:00         False     <span class="m">2</span>.5        <span class="m">0</span>.05   <span class="m">0</span>.00   <span class="m">0</span>.15    <span class="m">0</span>.00           None      <span class="m">1</span>         <span class="m">1805</span>.0              <span class="m">169</span>.53
+<span class="m">148</span>     <span class="m">15</span>   BCLI          call <span class="m">2020</span>-12-18 <span class="m">00</span>:00:00+00:00         False    <span class="m">20</span>.0        <span class="m">7</span>.00   <span class="m">6</span>.60   <span class="m">7</span>.50    <span class="m">0</span>.04           <span class="m">0</span>.57     <span class="m">37</span>          <span class="m">764</span>.0              <span class="m">266</span>.89
+</code></pre></div>
+</details>
+<h2 id="full-script">Full Script</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">as_completed</span><span class="p">,</span> <span class="n">ThreadPoolExecutor</span>
+
+<span class="kn">from</span> <span class="nn">nitter_scraper</span> <span class="kn">import</span> <span class="n">NitterScraper</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">requests_whaor</span> <span class="kn">import</span> <span class="n">RequestsWhaor</span>
+<span class="kn">from</span> <span class="nn">yfs</span> <span class="kn">import</span> <span class="n">fuzzy_search</span><span class="p">,</span> <span class="n">get_options_page</span>
+
+<span class="n">watchlist</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Lets scrape the first page of eWhispers twitter feed for a list of symbols.</span>
+<span class="k">with</span> <span class="n">NitterScraper</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">8008</span><span class="p">)</span> <span class="k">as</span> <span class="n">nitter</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">nitter</span><span class="o">.</span><span class="n">get_tweets</span><span class="p">(</span><span class="s2">&quot;eWhispers&quot;</span><span class="p">,</span> <span class="n">pages</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">tweet</span><span class="o">.</span><span class="n">is_pinned</span><span class="p">:</span>  <span class="c1"># Lets skip the pinned tweet.</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">tweet</span><span class="o">.</span><span class="n">is_retweet</span><span class="p">:</span>  <span class="c1"># Lets skip any retweets.</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">tweet</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">cashtags</span><span class="p">:</span>
+            <span class="c1"># Lets check if cashtags exists in the tweet then add them to the watchlist.</span>
+            <span class="n">watchlist</span> <span class="o">+=</span> <span class="n">tweet</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">cashtags</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Quick little progress_bar so we don&#39;t get bored.</span>
+    <span class="nb">print</span><span class="p">()</span>  <span class="c1"># Print new line when complete just to make things look a little cleaner.</span>
+
+
+<span class="n">watchlist</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">cashtag</span><span class="p">:</span> <span class="n">cashtag</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">watchlist</span><span class="p">)))</span>
+<span class="c1"># Lets sort, remove duplicates, and clean &#39;$&#39; strings from each symbols.</span>
+
+<span class="n">valid_symbols</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Used to store symbols validated with the fuzzy_search function.</span>
+<span class="n">call_chains</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Used to store all the found call option chains.</span>
+
+<span class="c1"># Decide on how many threads and proxies your computer can handle</span>
+<span class="n">MAX_THREADS</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="c1"># Each proxy is a tor circuit running inside a separate docker container.</span>
+<span class="n">MAX_PROXIES</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="k">with</span> <span class="n">RequestsWhaor</span><span class="p">(</span><span class="n">onion_count</span><span class="o">=</span><span class="n">MAX_PROXIES</span><span class="p">,</span> <span class="n">max_threads</span><span class="o">=</span><span class="n">MAX_THREADS</span><span class="p">)</span> <span class="k">as</span> <span class="n">request_whaor</span><span class="p">:</span>
+    <span class="c1"># RequestsWhaor will spin up a network of TOR nodes we will use as a rotating proxy.</span>
+
+    <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">MAX_THREADS</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+        <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                <span class="n">fuzzy_search</span><span class="p">,</span> <span class="n">ticker</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">request_whaor</span>
+            <span class="p">)</span>  <span class="c1"># ^--Here we pass request_whaor as a session like object.</span>
+            <span class="k">for</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="n">watchlist</span>
+        <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Quick progress bar.</span>
+
+            <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                <span class="c1"># Now we append the results to the valid_symbols list.</span>
+                <span class="n">valid_symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="c1"># Lets get the raw symbol from each ValidSymbol object.</span>
+        <span class="n">valid_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">ticker</span><span class="o">.</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="n">valid_symbols</span><span class="p">]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;found&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_symbols</span><span class="p">))</span>  <span class="c1"># Number of valid symbols found.</span>
+
+        <span class="n">request_whaor</span><span class="o">.</span><span class="n">restart_onions</span><span class="p">()</span>  <span class="c1"># Lets get a fresh pool of proxies before the next step.</span>
+
+        <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                <span class="n">get_options_page</span><span class="p">,</span>
+                <span class="n">ticker</span><span class="p">,</span>
+                <span class="n">after_days</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>  <span class="c1"># Lets get options that have at least 60 days before expiring.</span>
+                <span class="n">first_chain</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># We only want the first expiration with all strike prices.</span>
+                <span class="n">use_fuzzy_search</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># We did fuzzy search already no need to do it again.</span>
+                <span class="n">session</span><span class="o">=</span><span class="n">request_whaor</span><span class="p">,</span>  <span class="c1"># pass request_whaor as a session like object.</span>
+                <span class="n">page_not_found_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># return None if the symbol doesn&#39;t have an option page.</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="c1"># Pass a 5 second timeout to the session.</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="n">valid_symbols</span>
+        <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Progress bar.</span>
+
+                <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">calls</span><span class="p">:</span>
+                        <span class="c1"># If the results have a call option chain we will append it to the list.</span>
+                        <span class="n">call_chains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">calls</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="c1"># We will pass on any exceptions.</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+
+<span class="n">first_otm_strike</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">call_chains</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">dataframe</span>
+    <span class="n">otm</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;in_the_money&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">otm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">first_otm_strike</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">otm</span><span class="p">)</span>
+
+<span class="n">final</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">first_otm_strike</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;contract_name&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;implied_volatility&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">final</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../extras/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Extras
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../../changelog/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Changelog
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+      <a href="https://twitter.com/dgnsrekt" target="_blank" rel="noopener" title="dgnsrekt on twitter" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+      <a href="https://github.com/dgnsrekt" target="_blank" rel="noopener" title="dgnsrekt on twitter" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+      <a href="https://t.me/dgnsrekt" target="_blank" rel="noopener" title="dgnsrekt on twitter" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.8 169.9l-40.7 191.8c-3 13.6-11.1 16.9-22.4 10.5l-62-45.7-29.9 28.8c-3.3 3.3-6.1 6.1-12.5 6.1l4.4-63.1 114.9-103.8c5-4.4-1.1-6.9-7.7-2.5l-142 89.4-61.2-19.1c-13.3-4.2-13.6-13.3 2.8-19.7l239.1-92.2c11.1-4 20.8 2.7 17.2 19.5z"/></svg>
+      </a>
+    
+      
+      
+      <a href="mailto:dgnsrekt@pm.me" target="_blank" rel="noopener" title="" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M476 3.2L12.5 270.6c-18.1 10.4-15.8 35.6 2.2 43.2L121 358.4l287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3L176 407v80.5c0 23.6 28.5 32.9 42.5 15.8L282 426l124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432C515 7.8 493.3-6.8 476 3.2z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.77e55a48.min.js"></script>
+      <script src="../../assets/javascripts/bundle.9554a270.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
