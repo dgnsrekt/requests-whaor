@@ -1,6 +1,15 @@
 # requests-whaor Changelog
 
 
+## [v0.2.1](https://github.com/dgnsrekt/requests-whaor/compare/v0.2.0...v0.2.1) (2020-10-11)
+
+### docs
+* Updated docs and bumped version. ([f31baa0](https://github.com/dgnsrekt/requests-whaor/commit/f31baa055437c89d8201a3610c6df5e74f20ce77))
+
+### fix
+* moved temporary file location. ([09d0cd0](https://github.com/dgnsrekt/requests-whaor/commit/09d0cd019132f164966ce7515a52dba302ceacac))
+
+
 ## v0.2.0 (2020-10-11)
 
 ### docs
@@ -30,4 +39,4 @@
 * added linting and basic test. ([cbad97f](https://github.com/dgnsrekt/requests-whaor/commit/cbad97fd1b81f8b79c22c016e77e662f80d8439d))
 
 
-::> 58 commits in 1 version tags, last considered commit: 4547fab10dd6f0c691cee517911ae8ac20c398c9
+::> 60 commits in 2 version tags, last considered commit: 09d0cd019132f164966ce7515a52dba302ceacac
