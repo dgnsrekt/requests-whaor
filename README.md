@@ -4,6 +4,8 @@
 
 **Requests** **W**ith **H**igh **A**vailability **O**nion **R**outer. For the filthiest web scrapers that have no time for rate-limits.
 
+[![Black](https://img.shields.io/badge/code%20style-black-black?style=for-the-badge&logo=appveyor)](https://github.com/psf/black)
+[![GitHub](https://img.shields.io/github/license/dgnsrekt/requests-whaor?style=for-the-badge)](https://raw.githubusercontent.com/dgnsrekt/requests-whaor/master/LICENSE)
 
 
 ## Overview
