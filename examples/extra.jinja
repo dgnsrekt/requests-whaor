@@ -1,0 +1,11 @@
+# **Extra Examples**
+{% for example in sections %}## {{example['title']}}
+
+```python
+{% for line in example['body'] %}{{ line }}
+{% endfor %}```
+{%if example['note']%}
+!!! note
+    {{example['note']}}{% endif %}
+
+{% endfor %}

@@ -1,0 +1,131 @@
+loaders:
+  - type: python
+    search_path: [requests_whaor]
+
+processors:
+  - type: filter
+  - type: google
+  - type: crossref
+
+renderer:
+  type: mkdocs
+
+  markdown:
+    signature_with_decorators: False
+    signature_in_header: False
+    signature_with_def: True
+    descriptive_class_title: False
+    descriptive_module_title: True
+    add_method_class_prefix: False
+    add_member_class_prefix: False
+    classdef_code_block: False
+    classdef_render_init_signature_if_needed: True
+    signature_code_block: True
+    render_module_header: False
+    insert_header_anchors: True
+    code_lang: True
+    html_headers: False
+    code_headers: True
+    docstrings_as_blockquote: True
+
+  output_directory: "docs"
+
+  site_name: requests_whaor
+  clean_render: True
+  pages:
+    - title: Overview
+      name: index
+      source: README.md
+
+    - title: Quickstart
+      name: quickstart
+      source: ./docs/markdown/quickstart.md
+
+    - title: Examples
+      name: examples
+
+      children:
+        - title: Basics
+          source: ./docs/markdown/examples/basics_example.md
+
+        - title: Extras
+          source: ./docs/markdown/examples/extra_example.md
+
+
+    - title: API Documentation
+      name: api
+
+      children:
+        - title: "Balancer Module"
+          contents:
+          - balancer.*
+
+        - title: "Circuit Module"
+          contents:
+          - circuit.*
+
+        - title: "Client Module"
+          contents:
+          - client.*
+
+        - title: "Core Module"
+          contents:
+          - core.*
+
+        - title: "Mount Module"
+          contents:
+          - mount.*
+
+        - title: "Network Module"
+          contents:
+          - network.*
+
+        - title: "Paths Module"
+          contents:
+          - paths.*
+
+  mkdocs_config:
+    repo_url: https://github.com/dgnsrekt/requests-whaor
+    theme:
+      name: material
+      palette:
+        primary: red
+        accent: red
+        scheme: slate
+
+      icon:
+        repo: fontawesome/brands/github-alt
+
+    markdown_extensions:
+      - pymdownx.highlight
+      - pymdownx.superfences
+      - admonition
+      - attr_list
+
+      - pymdownx.caret
+      - pymdownx.mark
+      - pymdownx.tilde
+      - pymdownx.details
+
+      - pymdownx.tasklist:
+          custom_checkbox: true
+
+      - pymdownx.betterem:
+          smart_enable: all
+
+    extra:
+      social:
+        - icon: fontawesome/brands/twitter
+          link: https://twitter.com/dgnsrekt
+          name: dgnsrekt on twitter
+
+        - icon: fontawesome/brands/github
+          link: https://github.com/dgnsrekt
+          name: dgnsrekt on twitter
+
+        - icon: fontawesome/brands/telegram
+          link: https://t.me/dgnsrekt
+          name: dgnsrekt on twitter
+
+        - icon: fontawesome/solid/paper-plane
+          link: mailto:dgnsrekt@pm.me

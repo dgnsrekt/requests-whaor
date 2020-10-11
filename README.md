@@ -1,112 +1,52 @@
-# **requests-whaor** [ri-kwests hawr]
+# **requests-whaor** [[ri-kwests](https://www.dictionary.com/browse/requests) [hawr](https://www.dictionary.com/browse/whore)]
+
+[**Requests**](https://requests.readthedocs.io) **+** [**Docker**](https://www.docker.com/) **+** [**HAproxy**](http://www.haproxy.org/) **+** [**Tor**](https://www.torproject.org/)
 
 **Requests** **W**ith **H**igh **A**vailability **O**nion **R**outer. For the filthiest web scrapers that have no time for rate-limits.
 
-Requests + Docker + HAproxy + Tor
 
-WORK IN PROGRESS
 
-## Prerequisites
-* Docker
-* Python ^3.8
+## Overview
+**requests-whaor** proxies GET requests through a local **Docker** network of **TOR** circuits. It takes care of starting and stopping a pool of **TOR** proxies behind an **HAproxy** load balancer, which acts as a round robin reverse proxy network. This will give each request a new IP address.  If you start having issues with the initial pool of IPs, **requests-whaor** can gather a new pool of IP addresses by restarting all **TOR** containers.
 
-## Examples
-#### examples/example_one.py
-
+## Install with pip
 ```
-from requests_whaor import RequestsWhaor
-
-URL = "http://jsonip.com/"
-
-with RequestsWhaor(onion_count=5) as requests_whaor:
-    for _ in range(10):
-        try:
-            resp = requests_whaor.get(URL)
-
-            if resp.ok:
-                print(resp.text)
-
-        except Exception as e:
-            print(e)
-
+pip install requests-whaor
 ```
-#### Results: examples/example_one.py
-![alt text](docs/img/example_one.gif)
 
-#### examples/example_three.py
-
+## Install with [Poetry](https://python-poetry.org/)
 ```
-from requests_whaor import RequestsWhaor
-import requests
-from requests.exceptions import ProxyError, Timeout, ConnectionError
-from concurrent.futures import as_completed, ProcessPoolExecutor
-from collections import Counter
-
-URL = "http://jsonip.com/"
-
-REQUESTS_TO_SEND = 50
-PROXY_COUNT = 10
-WORKERS = 10
-
-
-def get_retry_loop(url, proxies, retry=5):
-    try:
-        response = requests.get(url, proxies=proxies, timeout=5)
-
-        if response.ok:
-            print(response.text)
-            return "PASSED"
-
-    except (ProxyError, Timeout, ConnectionError) as e:
-        print()
-        print(e)
-        print(f"Will retry ({retry}) more times.")
-        print()
-
-    if retry > 0:
-        retry -= 1
-    else:
-        return "FAILED"
-
-    return get_retry_loop(url, proxies, retry=retry)
-
-
-results = []
-with RequestsWhaor(onion_count=PROXY_COUNT) as requests_whaor:
-    with ProcessPoolExecutor(max_workers=WORKERS) as executor:
-        futures = [
-            executor.submit(get_retry_loop, URL, requests_whaor.rotating_proxy)
-            for _ in range(REQUESTS_TO_SEND)
-        ]
-        for future in as_completed(futures):
-            result = future.result()
-            results.append(result)
-        else:
-            print("done.")
-
-print(Counter(results))
-
+poetry add requests-whaor
 ```
-#### Results: examples/example_three.py
-![alt text](docs/img/example_three.gif)
 
-### You may need theses just in case.
+
+## [>> **Quickstart** / **Docs** <<](link)
+
+## Projects to highlight.
+* [**dperson's**](https://hub.docker.com/u/dperson) - [torproxy docker container](https://hub.docker.com/r/dperson/torproxy)
+* [**zet4's**](https://github.com/zet4) - [alpine-tor library](https://github.com/zet4/alpine-tor)
+* [torproject](https://www.torproject.org/)
+* [haproxy](https://hub.docker.com/_/haproxy)
+
+## Useful Docker commands.
+### If things get out of hand you may need these commands for debugging or killing containers.
 ```
-docker ps -q --filter ancestor=osminogin/tor-simple:latest | xargs -L 1 docker logs --follow
-docker stop $(docker ps -q --filter ancestor=osminogin/tor-simple:latest)
-docker stop $(docker ps -q --filter ancestor=haproxy:latest)
+docker ps -q --filter ancestor=osminogin/tor-simple | xargs -L 1 docker logs --follow
+
+docker ps -q --filter ancestor=osminogin/haproxy | xargs -L 1 docker logs --follow
+
+docker stop $(docker ps -q --filter ancestor=osminogin/tor-simple)
+
+docker stop $(docker ps -q --filter ancestor=haproxy)
+
 docker network rm $(docker network ls -q -f name=whaornet)
 ```
-### HAProxy Dashboard
-The name of each container is shown in the haproxy stat report.
-![alt text](docs/img/haproxy_ss.png)
-
 
 ## TODO
-* docs
-* tests
-* clean up main context manger logic.
-* publish
+* [ ] Testing.
+* [ ] More request methods if requested.
+* [ ] Options for using different Tor containers.
+* [ ] Options for different load balancer containers.
 
 ## Contact Information
 Telegram = Twitter = Tradingview = Discord = @dgnsrekt
