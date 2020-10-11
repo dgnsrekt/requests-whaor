@@ -1,9 +1,11 @@
+"""Path and sanity tests."""
+
 from requests_whaor import __version__
 from requests_whaor.paths import (
     PROJECT_ROOT_PATH,
     SOURCE_ROOT_PATH,
-    TEST_PATH,
     TEMPLATE_DIRECTORY,
+    TEST_PATH,
 )
 import toml
 
